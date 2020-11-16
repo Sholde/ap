@@ -1,0 +1,36 @@
+#+title: TD SIMD
+#+author: Nicolas Bouton
+#+date: 2020
+
+* Information
+** Makefile
+*** Compile
+
+   Run the command below to compile the program with *gcc* and *clang*
+   with different optimization.
+
+   #+begin_src c
+   
+   $ make
+
+   #+end_src
+
+*** Clean   
+
+    You can also clean the folder with :
+
+   #+begin_src c
+   
+   $ make clean
+
+   #+end_src
+    
+** Script
+
+   The script *asm.sh* just desassemble all the given binary that make
+   command produce.
+
+** Provide file
+
+   There are the 3 given files on the folders : *gcc_ver.txt*,
+   *clang_ver.txt* and *cpuinfo.txt*.
