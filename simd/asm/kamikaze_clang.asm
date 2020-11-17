@@ -67,8 +67,8 @@ Déassemblage de la section .text :
     10ad:	48 83 e4 f0          	and    $0xfffffffffffffff0,%rsp
     10b1:	50                   	push   %rax
     10b2:	54                   	push   %rsp
-    10b3:	4c 8d 05 96 05 00 00 	lea    0x596(%rip),%r8        # 1650 <__libc_csu_fini>
-    10ba:	48 8d 0d 1f 05 00 00 	lea    0x51f(%rip),%rcx        # 15e0 <__libc_csu_init>
+    10b3:	4c 8d 05 06 06 00 00 	lea    0x606(%rip),%r8        # 16c0 <__libc_csu_fini>
+    10ba:	48 8d 0d 8f 05 00 00 	lea    0x58f(%rip),%rcx        # 1650 <__libc_csu_init>
     10c1:	48 8d 3d d8 00 00 00 	lea    0xd8(%rip),%rdi        # 11a0 <main>
     10c8:	ff 15 12 2f 00 00    	callq  *0x2f12(%rip)        # 3fe0 <__libc_start_main@GLIBC_2.2.5>
     10ce:	f4                   	hlt    
@@ -135,7 +135,7 @@ Déassemblage de la section .text :
 
 00000000000011a0 <main>:
   
-  return d;
+  return d[0] + d[1];
 }
 
 int main(int argc, char **argv)
@@ -143,61 +143,61 @@ int main(int argc, char **argv)
     11a0:	41 57                	push   %r15
     11a2:	41 56                	push   %r14
     11a4:	53                   	push   %rbx
+    11a5:	48 83 ec 10          	sub    $0x10,%rsp
   if (argc != 2)
-    11a5:	83 ff 02             	cmp    $0x2,%edi
-    11a8:	0f 85 e0 03 00 00    	jne    158e <main+0x3ee>
+    11a9:	83 ff 02             	cmp    $0x2,%edi
+    11ac:	0f 85 dc 03 00 00    	jne    158e <main+0x3ee>
   return strtoll(argv[1], NULL, 10);
-    11ae:	48 8b 7e 08          	mov    0x8(%rsi),%rdi
-    11b2:	31 f6                	xor    %esi,%esi
-    11b4:	ba 0a 00 00 00       	mov    $0xa,%edx
-    11b9:	e8 92 fe ff ff       	callq  1050 <strtoll@plt>
-    11be:	49 89 c7             	mov    %rax,%r15
+    11b2:	48 8b 7e 08          	mov    0x8(%rsi),%rdi
+    11b6:	31 f6                	xor    %esi,%esi
+    11b8:	ba 0a 00 00 00       	mov    $0xa,%edx
+    11bd:	e8 8e fe ff ff       	callq  1050 <strtoll@plt>
+    11c2:	49 89 c7             	mov    %rax,%r15
   // Parse arguments
   unsigned long long n = parse_args(argc, argv);
 
   // Alloc the memory
   double *a = aligned_alloc(64, n * sizeof(double));
-    11c1:	48 8d 1c c5 00 00 00 	lea    0x0(,%rax,8),%rbx
-    11c8:	00 
-    11c9:	bf 40 00 00 00       	mov    $0x40,%edi
-    11ce:	48 89 de             	mov    %rbx,%rsi
-    11d1:	e8 9a fe ff ff       	callq  1070 <aligned_alloc@plt>
-    11d6:	49 89 c6             	mov    %rax,%r14
+    11c5:	48 8d 1c c5 00 00 00 	lea    0x0(,%rax,8),%rbx
+    11cc:	00 
+    11cd:	bf 40 00 00 00       	mov    $0x40,%edi
+    11d2:	48 89 de             	mov    %rbx,%rsi
+    11d5:	e8 96 fe ff ff       	callq  1070 <aligned_alloc@plt>
+    11da:	49 89 c6             	mov    %rax,%r14
   double *b = aligned_alloc(64, n * sizeof(double));
-    11d9:	bf 40 00 00 00       	mov    $0x40,%edi
-    11de:	48 89 de             	mov    %rbx,%rsi
-    11e1:	e8 8a fe ff ff       	callq  1070 <aligned_alloc@plt>
-    11e6:	48 89 c3             	mov    %rax,%rbx
+    11dd:	bf 40 00 00 00       	mov    $0x40,%edi
+    11e2:	48 89 de             	mov    %rbx,%rsi
+    11e5:	e8 86 fe ff ff       	callq  1070 <aligned_alloc@plt>
+    11ea:	48 89 c3             	mov    %rax,%rbx
   for (unsigned long long i = 0; i < n; i++)
-    11e9:	4d 85 ff             	test   %r15,%r15
-    11ec:	74 0d                	je     11fb <main+0x5b>
-    11ee:	49 83 ff 10          	cmp    $0x10,%r15
-    11f2:	73 10                	jae    1204 <main+0x64>
-    11f4:	31 c0                	xor    %eax,%eax
-    11f6:	e9 e5 01 00 00       	jmpq   13e0 <main+0x240>
-    11fb:	c5 f9 57 c0          	vxorpd %xmm0,%xmm0,%xmm0
-    11ff:	e9 ab 03 00 00       	jmpq   15af <main+0x40f>
-    1204:	4c 89 f8             	mov    %r15,%rax
-    1207:	48 83 e0 f0          	and    $0xfffffffffffffff0,%rax
-    120b:	48 8d 70 f0          	lea    -0x10(%rax),%rsi
-    120f:	48 89 f2             	mov    %rsi,%rdx
-    1212:	48 c1 ea 04          	shr    $0x4,%rdx
-    1216:	48 ff c2             	inc    %rdx
-    1219:	89 d1                	mov    %edx,%ecx
-    121b:	83 e1 03             	and    $0x3,%ecx
-    121e:	48 83 fe 30          	cmp    $0x30,%rsi
-    1222:	73 07                	jae    122b <main+0x8b>
-    1224:	31 f6                	xor    %esi,%esi
-    1226:	e9 49 01 00 00       	jmpq   1374 <main+0x1d4>
-    122b:	48 29 ca             	sub    %rcx,%rdx
-    122e:	31 f6                	xor    %esi,%esi
-    1230:	c4 e2 7d 19 05 cf 0d 	vbroadcastsd 0xdcf(%rip),%ymm0        # 2008 <_IO_stdin_used+0x8>
-    1237:	00 00 
-    1239:	c4 e2 7d 19 0d ce 0d 	vbroadcastsd 0xdce(%rip),%ymm1        # 2010 <_IO_stdin_used+0x10>
-    1240:	00 00 
-    1242:	66 2e 0f 1f 84 00 00 	nopw   %cs:0x0(%rax,%rax,1)
-    1249:	00 00 00 
-    124c:	0f 1f 40 00          	nopl   0x0(%rax)
+    11ed:	4d 85 ff             	test   %r15,%r15
+    11f0:	74 0d                	je     11ff <main+0x5f>
+    11f2:	49 83 ff 10          	cmp    $0x10,%r15
+    11f6:	73 1a                	jae    1212 <main+0x72>
+    11f8:	31 c0                	xor    %eax,%eax
+    11fa:	e9 e1 01 00 00       	jmpq   13e0 <main+0x240>
+    11ff:	c5 f9 57 c0          	vxorpd %xmm0,%xmm0,%xmm0
+    1203:	c5 f1 57 c9          	vxorpd %xmm1,%xmm1,%xmm1
+    1207:	c5 fb 11 4c 24 08    	vmovsd %xmm1,0x8(%rsp)
+    120d:	e9 ee 03 00 00       	jmpq   1600 <main+0x460>
+    1212:	4c 89 f8             	mov    %r15,%rax
+    1215:	48 83 e0 f0          	and    $0xfffffffffffffff0,%rax
+    1219:	48 8d 70 f0          	lea    -0x10(%rax),%rsi
+    121d:	48 89 f2             	mov    %rsi,%rdx
+    1220:	48 c1 ea 04          	shr    $0x4,%rdx
+    1224:	48 ff c2             	inc    %rdx
+    1227:	89 d1                	mov    %edx,%ecx
+    1229:	83 e1 03             	and    $0x3,%ecx
+    122c:	48 83 fe 30          	cmp    $0x30,%rsi
+    1230:	73 07                	jae    1239 <main+0x99>
+    1232:	31 f6                	xor    %esi,%esi
+    1234:	e9 3b 01 00 00       	jmpq   1374 <main+0x1d4>
+    1239:	48 29 ca             	sub    %rcx,%rdx
+    123c:	31 f6                	xor    %esi,%esi
+    123e:	c4 e2 7d 19 05 c1 0d 	vbroadcastsd 0xdc1(%rip),%ymm0        # 2008 <_IO_stdin_used+0x8>
+    1245:	00 00 
+    1247:	c4 e2 7d 19 0d c0 0d 	vbroadcastsd 0xdc0(%rip),%ymm1        # 2010 <_IO_stdin_used+0x10>
+    124e:	00 00 
       a[i] = 0.1;
     1250:	c4 c1 7d 11 04 f6    	vmovupd %ymm0,(%r14,%rsi,8)
     1256:	c4 c1 7d 11 44 f6 20 	vmovupd %ymm0,0x20(%r14,%rsi,8)
@@ -309,7 +309,7 @@ int main(int argc, char **argv)
     140b:	49 39 c7             	cmp    %rax,%r15
     140e:	75 f0                	jne    1400 <main+0x260>
     1410:	49 83 ff 10          	cmp    $0x10,%r15
-  for (unsigned long long i = 0; i < n; i++)
+  for (unsigned long long i = 0; i < n; ++i)
     1414:	73 0b                	jae    1421 <main+0x281>
     1416:	c5 f9 57 c0          	vxorpd %xmm0,%xmm0,%xmm0
     141a:	31 c0                	xor    %eax,%eax
@@ -364,7 +364,7 @@ int main(int argc, char **argv)
     14f0:	c4 c1 45 59 a4 ce e0 	vmulpd 0xe0(%r14,%rcx,8),%ymm7,%ymm4
     14f7:	00 00 00 
     14fa:	c5 dd 58 db          	vaddpd %ymm3,%ymm4,%ymm3
-  for (unsigned long long i = 0; i < n; i++)
+  for (unsigned long long i = 0; i < n; ++i)
     14fe:	48 83 c1 20          	add    $0x20,%rcx
     1502:	48 83 c6 fe          	add    $0xfffffffffffffffe,%rsi
     1506:	0f 85 54 ff ff ff    	jne    1460 <main+0x2c0>
@@ -383,7 +383,7 @@ int main(int argc, char **argv)
     1545:	c5 d5 58 c9          	vaddpd %ymm1,%ymm5,%ymm1
     1549:	c4 c1 5d 59 24 ce    	vmulpd (%r14,%rcx,8),%ymm4,%ymm4
     154f:	c5 dd 58 c0          	vaddpd %ymm0,%ymm4,%ymm0
-  for (unsigned long long i = 0; i < n; i++)
+  for (unsigned long long i = 0; i < n; ++i)
     1553:	c5 fd 58 c2          	vaddpd %ymm2,%ymm0,%ymm0
     1557:	c5 f5 58 cb          	vaddpd %ymm3,%ymm1,%ymm1
     155b:	c5 fd 58 c1          	vaddpd %ymm1,%ymm0,%ymm0
@@ -407,84 +407,114 @@ int main(int argc, char **argv)
     1598:	c5 fb 10 0c c3       	vmovsd (%rbx,%rax,8),%xmm1
     159d:	c4 c1 73 59 0c c6    	vmulsd (%r14,%rax,8),%xmm1,%xmm1
     15a3:	c5 f3 58 c0          	vaddsd %xmm0,%xmm1,%xmm0
-  for (unsigned long long i = 0; i < n; i++)
+  for (unsigned long long i = 0; i < n; ++i)
     15a7:	48 ff c0             	inc    %rax
     15aa:	49 39 c7             	cmp    %rax,%r15
     15ad:	75 e9                	jne    1598 <main+0x3f8>
-
+    15af:	c5 f1 57 c9          	vxorpd %xmm1,%xmm1,%xmm1
+    15b3:	31 c0                	xor    %eax,%eax
+    15b5:	66 2e 0f 1f 84 00 00 	nopw   %cs:0x0(%rax,%rax,1)
+    15bc:	00 00 00 
+    15bf:	90                   	nop
+      d[0] += a[i] * b[i];
+    15c0:	c5 f9 10 14 c3       	vmovupd (%rbx,%rax,8),%xmm2
+    15c5:	c4 c1 69 59 14 c6    	vmulpd (%r14,%rax,8),%xmm2,%xmm2
+    15cb:	c5 e9 58 c9          	vaddpd %xmm1,%xmm2,%xmm1
+  for (unsigned long long i = 0; i < n; i += 2)
+    15cf:	48 83 c0 02          	add    $0x2,%rax
+    15d3:	4c 39 f8             	cmp    %r15,%rax
+    15d6:	72 e8                	jb     15c0 <main+0x420>
+    15d8:	c4 e3 79 05 d1 01    	vpermilpd $0x1,%xmm1,%xmm2
+    15de:	c5 eb 58 d1          	vaddsd %xmm1,%xmm2,%xmm2
+  if (n & 1)
+    15e2:	41 f6 c7 01          	test   $0x1,%r15b
+    15e6:	74 12                	je     15fa <main+0x45a>
+    return d[0] + d[1] + a[n-1] * b[n-1];
+    15e8:	c4 a1 7b 10 4c fb f8 	vmovsd -0x8(%rbx,%r15,8),%xmm1
+    15ef:	c4 81 73 59 4c fe f8 	vmulsd -0x8(%r14,%r15,8),%xmm1,%xmm1
+    15f6:	c5 f3 58 d2          	vaddsd %xmm2,%xmm1,%xmm2
+    15fa:	c5 fb 11 54 24 08    	vmovsd %xmm2,0x8(%rsp)
   // Compute
   double res = dotprod(a, b, n);
+  double res_2x = dotprod_2x(a, b, n);
 
   // Print result
   printf("res = %lf\n", res);
-    15af:	48 8d 3d 62 0a 00 00 	lea    0xa62(%rip),%rdi        # 2018 <_IO_stdin_used+0x18>
-    15b6:	b0 01                	mov    $0x1,%al
-    15b8:	c5 f8 77             	vzeroupper 
-    15bb:	e8 80 fa ff ff       	callq  1040 <printf@plt>
+    1600:	48 8d 3d 11 0a 00 00 	lea    0xa11(%rip),%rdi        # 2018 <_IO_stdin_used+0x18>
+    1607:	b0 01                	mov    $0x1,%al
+    1609:	c5 f8 77             	vzeroupper 
+    160c:	e8 2f fa ff ff       	callq  1040 <printf@plt>
+  printf("res_2x = %lf\n", res_2x);
+    1611:	48 8d 3d 0b 0a 00 00 	lea    0xa0b(%rip),%rdi        # 2023 <_IO_stdin_used+0x23>
+    1618:	c5 fb 10 44 24 08    	vmovsd 0x8(%rsp),%xmm0
+    161e:	b0 01                	mov    $0x1,%al
+    1620:	e8 1b fa ff ff       	callq  1040 <printf@plt>
 
   // Free memory
   free(a);
-    15c0:	4c 89 f7             	mov    %r14,%rdi
-    15c3:	e8 68 fa ff ff       	callq  1030 <free@plt>
+    1625:	4c 89 f7             	mov    %r14,%rdi
+    1628:	e8 03 fa ff ff       	callq  1030 <free@plt>
   free(b);
-    15c8:	48 89 df             	mov    %rbx,%rdi
-    15cb:	e8 60 fa ff ff       	callq  1030 <free@plt>
+    162d:	48 89 df             	mov    %rbx,%rdi
+    1630:	e8 fb f9 ff ff       	callq  1030 <free@plt>
   
   return 0;
-    15d0:	31 c0                	xor    %eax,%eax
-    15d2:	5b                   	pop    %rbx
-    15d3:	41 5e                	pop    %r14
-    15d5:	41 5f                	pop    %r15
-    15d7:	c3                   	retq   
-    15d8:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-    15df:	00 
+    1635:	31 c0                	xor    %eax,%eax
+    1637:	48 83 c4 10          	add    $0x10,%rsp
+    163b:	5b                   	pop    %rbx
+    163c:	41 5e                	pop    %r14
+    163e:	41 5f                	pop    %r15
+    1640:	c3                   	retq   
+    1641:	66 2e 0f 1f 84 00 00 	nopw   %cs:0x0(%rax,%rax,1)
+    1648:	00 00 00 
+    164b:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
 
-00000000000015e0 <__libc_csu_init>:
-    15e0:	f3 0f 1e fa          	endbr64 
-    15e4:	41 57                	push   %r15
-    15e6:	4c 8d 3d e3 27 00 00 	lea    0x27e3(%rip),%r15        # 3dd0 <__frame_dummy_init_array_entry>
-    15ed:	41 56                	push   %r14
-    15ef:	49 89 d6             	mov    %rdx,%r14
-    15f2:	41 55                	push   %r13
-    15f4:	49 89 f5             	mov    %rsi,%r13
-    15f7:	41 54                	push   %r12
-    15f9:	41 89 fc             	mov    %edi,%r12d
-    15fc:	55                   	push   %rbp
-    15fd:	48 8d 2d dc 27 00 00 	lea    0x27dc(%rip),%rbp        # 3de0 <__do_global_dtors_aux_fini_array_entry>
-    1604:	53                   	push   %rbx
-    1605:	4c 29 fd             	sub    %r15,%rbp
-    1608:	48 83 ec 08          	sub    $0x8,%rsp
-    160c:	e8 ef f9 ff ff       	callq  1000 <_init>
-    1611:	48 c1 fd 03          	sar    $0x3,%rbp
-    1615:	74 1f                	je     1636 <__libc_csu_init+0x56>
-    1617:	31 db                	xor    %ebx,%ebx
-    1619:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
-    1620:	4c 89 f2             	mov    %r14,%rdx
-    1623:	4c 89 ee             	mov    %r13,%rsi
-    1626:	44 89 e7             	mov    %r12d,%edi
-    1629:	41 ff 14 df          	callq  *(%r15,%rbx,8)
-    162d:	48 83 c3 01          	add    $0x1,%rbx
-    1631:	48 39 dd             	cmp    %rbx,%rbp
-    1634:	75 ea                	jne    1620 <__libc_csu_init+0x40>
-    1636:	48 83 c4 08          	add    $0x8,%rsp
-    163a:	5b                   	pop    %rbx
-    163b:	5d                   	pop    %rbp
-    163c:	41 5c                	pop    %r12
-    163e:	41 5d                	pop    %r13
-    1640:	41 5e                	pop    %r14
-    1642:	41 5f                	pop    %r15
-    1644:	c3                   	retq   
-    1645:	66 66 2e 0f 1f 84 00 	data16 nopw %cs:0x0(%rax,%rax,1)
-    164c:	00 00 00 00 
-
-0000000000001650 <__libc_csu_fini>:
+0000000000001650 <__libc_csu_init>:
     1650:	f3 0f 1e fa          	endbr64 
-    1654:	c3                   	retq   
+    1654:	41 57                	push   %r15
+    1656:	4c 8d 3d 73 27 00 00 	lea    0x2773(%rip),%r15        # 3dd0 <__frame_dummy_init_array_entry>
+    165d:	41 56                	push   %r14
+    165f:	49 89 d6             	mov    %rdx,%r14
+    1662:	41 55                	push   %r13
+    1664:	49 89 f5             	mov    %rsi,%r13
+    1667:	41 54                	push   %r12
+    1669:	41 89 fc             	mov    %edi,%r12d
+    166c:	55                   	push   %rbp
+    166d:	48 8d 2d 6c 27 00 00 	lea    0x276c(%rip),%rbp        # 3de0 <__do_global_dtors_aux_fini_array_entry>
+    1674:	53                   	push   %rbx
+    1675:	4c 29 fd             	sub    %r15,%rbp
+    1678:	48 83 ec 08          	sub    $0x8,%rsp
+    167c:	e8 7f f9 ff ff       	callq  1000 <_init>
+    1681:	48 c1 fd 03          	sar    $0x3,%rbp
+    1685:	74 1f                	je     16a6 <__libc_csu_init+0x56>
+    1687:	31 db                	xor    %ebx,%ebx
+    1689:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
+    1690:	4c 89 f2             	mov    %r14,%rdx
+    1693:	4c 89 ee             	mov    %r13,%rsi
+    1696:	44 89 e7             	mov    %r12d,%edi
+    1699:	41 ff 14 df          	callq  *(%r15,%rbx,8)
+    169d:	48 83 c3 01          	add    $0x1,%rbx
+    16a1:	48 39 dd             	cmp    %rbx,%rbp
+    16a4:	75 ea                	jne    1690 <__libc_csu_init+0x40>
+    16a6:	48 83 c4 08          	add    $0x8,%rsp
+    16aa:	5b                   	pop    %rbx
+    16ab:	5d                   	pop    %rbp
+    16ac:	41 5c                	pop    %r12
+    16ae:	41 5d                	pop    %r13
+    16b0:	41 5e                	pop    %r14
+    16b2:	41 5f                	pop    %r15
+    16b4:	c3                   	retq   
+    16b5:	66 66 2e 0f 1f 84 00 	data16 nopw %cs:0x0(%rax,%rax,1)
+    16bc:	00 00 00 00 
+
+00000000000016c0 <__libc_csu_fini>:
+    16c0:	f3 0f 1e fa          	endbr64 
+    16c4:	c3                   	retq   
 
 Déassemblage de la section .fini :
 
-0000000000001658 <_fini>:
-    1658:	f3 0f 1e fa          	endbr64 
-    165c:	48 83 ec 08          	sub    $0x8,%rsp
-    1660:	48 83 c4 08          	add    $0x8,%rsp
-    1664:	c3                   	retq   
+00000000000016c8 <_fini>:
+    16c8:	f3 0f 1e fa          	endbr64 
+    16cc:	48 83 ec 08          	sub    $0x8,%rsp
+    16d0:	48 83 c4 08          	add    $0x8,%rsp
+    16d4:	c3                   	retq   
