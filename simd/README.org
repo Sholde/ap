@@ -3,6 +3,41 @@
 #+date: 2020
 
 * Information
+
+  Just the *install.sh* srcipt must be called.
+
+** Script
+*** install script
+
+    Compile, desassemble, move *.asm* file and clean binary file.
+
+    Usage :
+
+    #+begin_src bash
+    $ ./install.sh
+    #+end_src
+
+*** asm script
+
+   The script *asm.sh* just desassemble all binaries (that *make*
+   command produce) in the directories.
+
+   Usage :
+
+    #+begin_src bash
+    $ ./asm.sh
+    #+end_src
+
+*** move script
+    
+    Move the *.asm* file to *adm* directory.
+
+   Usage :
+
+    #+begin_src bash
+    $ ./move.sh
+    #+end_src
+
 ** Makefile
 *** Compile
 
@@ -10,9 +45,7 @@
    with different optimization.
 
    #+begin_src c
-   
    $ make
-
    #+end_src
 
 *** Clean   
@@ -20,17 +53,12 @@
     You can also clean the folder with :
 
    #+begin_src c
-   
    $ make clean
-
    #+end_src
     
-** Script
-
-   The script *asm.sh* just desassemble all the given binary that make
-   command produce.
-
 ** Provide file
 
-   There are the 3 given files on the folders : *gcc_ver.txt*,
+   There are 3 given files on the folders : *gcc_ver.txt*,
    *clang_ver.txt* and *cpuinfo.txt*.
+
+* Answer
