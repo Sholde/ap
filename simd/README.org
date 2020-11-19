@@ -79,7 +79,7 @@
 *** gcc
 *** clang
 *** ccl
-** Low
+** Light
 *** gcc
 *** clang
 *** ccl
@@ -99,7 +99,7 @@
 
    _Vectorization :_
 
-   | compiler \ opti | base | low | opti | high | kamikaze |
-   |-----------------+------+-----+------+------+----------|
-   | gcc             | -    | -   | -    | -    | -        |
-   | clang           | -    | -   | -    | -    | -        |
+   | compiler \ opti | base | light | opti | high | kamikaze |
+   |-----------------+------+-------+------+------+----------|
+   | gcc             | -    | -     | -    | -    | -        |
+   | clang           | -    | -     | -    | -    | -        |
