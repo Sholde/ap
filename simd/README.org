@@ -44,7 +44,7 @@
    Run the command below to compile the program with *gcc* and *clang*
    with different optimization.
 
-   #+begin_src c
+   #+begin_src bash
    $ make
    #+end_src
 
@@ -52,7 +52,7 @@
 
     You can also clean the folder with :
 
-   #+begin_src c
+   #+begin_src bash
    $ make clean
    #+end_src
     
