@@ -62,3 +62,44 @@
    *clang_ver.txt* and *cpuinfo.txt*.
 
 * Answer
+** Introduction
+
+  Here I will compare *two compiler* by optimization flags.
+  
+  - gcc
+  - clang
+    
+** Code
+
+   In my c code, I let user to choice one size of the matrix to see
+   the dynamic compilation effect and I fix a size in the code to see
+   the static compilation effect.
+
+** Base
+*** gcc
+*** clang
+*** ccl
+** Low
+*** gcc
+*** clang
+*** ccl
+** Optimized
+*** gcc
+*** clang
+*** ccl
+** High
+*** gcc
+*** clang
+*** ccl
+** Kamikaze
+*** gcc
+*** clang
+*** ccl
+** Conclusion
+
+   _Vectorization :_
+
+   | compiler \ opti | base | low | opti | high | kamikaze |
+   |-----------------+------+-----+------+------+----------|
+   | gcc             | -    | -   | -    | -    | -        |
+   | clang           | -    | -   | -    | -    | -        |
