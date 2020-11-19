@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #define ARGS 1
+#define SIZE 100
 
 // Parse arguments
 unsigned long long parse_args(int argc, char **argv)
