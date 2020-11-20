@@ -434,6 +434,53 @@
 
 ** Optimized
 *** gcc
+**** Scalar
+     
+     #+begin_src asm
+     1570:	66 0f 10 04 07       	movupd (%rdi,%rax,1),%xmm0
+     1575:	66 0f 10 1c 06       	movupd (%rsi,%rax,1),%xmm3
+     157a:	48 83 c0 10          	add    $0x10,%rax
+     157e:	66 0f 59 c3          	mulpd  %xmm3,%xmm0
+     1582:	f2 0f 58 c8          	addsd  %xmm0,%xmm1
+     1586:	66 0f 15 c0          	unpckhpd %xmm0,%xmm0
+     158a:	f2 0f 58 c8          	addsd  %xmm0,%xmm1
+     158e:	48 39 c1             	cmp    %rax,%rcx
+     1591:	75 dd                	jne    1570 <dotprod+0x20>
+     #+end_src
+
+     *gcc* vectorized instructions.
+
+**** Vector
+     
+     *gcc* also vectorised vector functions.
+
+     For exemple (vector of 2 double) :
+
+     #+begin_src asm
+     1610:	66 0f 10 1c 07       	movupd (%rdi,%rax,1),%xmm3
+     1615:	66 0f 10 04 06       	movupd (%rsi,%rax,1),%xmm0
+     161a:	66 0f 16 5c 07 10    	movhpd 0x10(%rdi,%rax,1),%xmm3
+     1620:	66 0f 16 44 06 10    	movhpd 0x10(%rsi,%rax,1),%xmm0
+     1626:	66 0f 59 d8          	mulpd  %xmm0,%xmm3
+     162a:	66 0f 10 44 07 10    	movupd 0x10(%rdi,%rax,1),%xmm0
+     1630:	66 0f 12 44 07 08    	movlpd 0x8(%rdi,%rax,1),%xmm0
+     1636:	f2 0f 58 d3          	addsd  %xmm3,%xmm2
+     163a:	66 0f 15 db          	unpckhpd %xmm3,%xmm3
+     163e:	f2 0f 58 d3          	addsd  %xmm3,%xmm2
+     1642:	66 0f 10 5c 06 10    	movupd 0x10(%rsi,%rax,1),%xmm3
+     1648:	66 0f 12 5c 06 08    	movlpd 0x8(%rsi,%rax,1),%xmm3
+     164e:	48 83 c0 20          	add    $0x20,%rax
+     1652:	66 0f 59 c3          	mulpd  %xmm3,%xmm0
+     1656:	f2 0f 58 c8          	addsd  %xmm0,%xmm1
+     165a:	66 0f 15 c0          	unpckhpd %xmm0,%xmm0
+     165e:	f2 0f 58 c8          	addsd  %xmm0,%xmm1
+     1662:	48 39 d0             	cmp    %rdx,%rax
+     1665:	75 a9                	jne    1610 <dotprod_2x+0x40>
+     #+end_src
+     
+     Here, it vectorized *multiplication* but not *addition*. It is
+     the same for others vector functions.
+
 *** clang
 *** ccl
 ** High
