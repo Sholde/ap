@@ -282,7 +282,7 @@
 
 *** ccl
 
-    Vectorized operation :
+    Vectorized instruction by functions and compiler :
 
     | compiler \ functions | baseline | vector_2x | vector_4x | vector_8x | vector_16x |
     |----------------------+----------+-----------+-----------+-----------+------------|
@@ -428,7 +428,7 @@
 
 *** ccl
 
-    Vectorized operation :
+    Vectorized instruction by functions and compiler :
 
     | compiler \ functions | baseline | vector_2x | vector_4x  | vector_8x  | vector_16x |
     |----------------------+----------+-----------+------------+------------+------------|
@@ -486,6 +486,14 @@
 
 *** clang
 *** ccl
+
+    Vectorized instruction by functions and compiler :
+
+    | compiler \ functions | baseline | vector_2x  | vector_4x  | vector_8x  | vector_16x |
+    |----------------------+----------+------------+------------+------------+------------|
+    | gcc                  | yes      | yes (half) | yes (half) | yes (half) | yes (half) |
+    | clang                | no       | no         | no         | no         | no         |
+
 ** High
 *** gcc
 *** clang
