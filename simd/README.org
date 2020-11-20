@@ -274,7 +274,7 @@
 
 *** clang
     
-    *clang* do the same as *gcc*. It don't use *pd* instructions.
+    *clang* does the same as *gcc*. It don't use *pd* instructions.
 
 *** static vs dynamic
     
