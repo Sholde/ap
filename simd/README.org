@@ -392,8 +392,7 @@
 ***** Other vectorire function
 
       Same as vector of 4 double.
-
-*** static vs dynamic
+**** main
 
     I see that main call *dotprod_8x* and *dotprod_16x* for dynamic.
 
@@ -422,6 +421,10 @@
 
     And I don't understand why the other are disapear. I found their
     name on *debug function*.
+
+*** static vs dynamic
+
+    Not difference.
 
 *** ccl
 
