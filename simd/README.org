@@ -2,6 +2,10 @@
 #+author: Nicolas Bouton
 #+date: 2020
 
+     #+begin_src asm
+
+     #+end_src
+
 * Information
 ** Makefile
 *** Compile
@@ -55,7 +59,230 @@
 
 ** Base
 *** gcc
+**** Scalar
+
+     #+begin_src asm
+     00000000000011a4 <dotprod>:
+     11a4:	48 85 d2             	test   %rdx,%rdx
+     11a7:	74 25                	je     11ce <dotprod+0x2a>
+     11a9:	b8 00 00 00 00       	mov    $0x0,%eax
+     11ae:	66 0f ef c9          	pxor   %xmm1,%xmm1
+     11b2:	f2 0f 10 04 c7       	movsd  (%rdi,%rax,8),%xmm0
+     11b7:	f2 0f 59 04 c6       	mulsd  (%rsi,%rax,8),%xmm0
+     11bc:	f2 0f 58 c8          	addsd  %xmm0,%xmm1
+     11c0:	48 83 c0 01          	add    $0x1,%rax
+     11c4:	48 39 c2             	cmp    %rax,%rdx
+     11c7:	75 e9                	jne    11b2 <dotprod+0xe>
+     11c9:	66 0f 28 c1          	movapd %xmm1,%xmm0
+     11cd:	c3                   	retq   
+     11ce:	66 0f ef c9          	pxor   %xmm1,%xmm1
+     11d2:	eb f5                	jmp    11c9 <dotprod+0x25>
+     #+end_src
+
+     We can see that on the loop which begin at *11b2* and finish at
+     *11c7*, *gcc* don't use vecotize instruction. (because it is *sd*
+     = scalar double)
+
+**** Vector
+***** 2 double
+
+      *Case size is divisible by 2:*
+
+      #+begin_src asm
+      11e9:	f2 0f 10 04 c7       	movsd  (%rdi,%rax,8),%xmm0
+      11ee:	f2 0f 59 04 c6       	mulsd  (%rsi,%rax,8),%xmm0
+      11f3:	f2 0f 58 c8          	addsd  %xmm0,%xmm1
+      11f7:	f2 0f 10 44 c7 08    	movsd  0x8(%rdi,%rax,8),%xmm0
+      11fd:	f2 0f 59 44 c6 08    	mulsd  0x8(%rsi,%rax,8),%xmm0
+      1203:	f2 0f 58 d0          	addsd  %xmm0,%xmm2
+      1207:	48 83 c0 02          	add    $0x2,%rax
+      120b:	48 39 c2             	cmp    %rax,%rdx
+      120e:	77 d9                	ja     11e9 <dotprod_2x+0x15>
+      #+end_src
+
+      We can see that *gcc* use also *sd* instruction.
+
+      *Case size is not divisible by 2:*
+
+      It is the same code but at the end of the boucle we do one more
+      multiplication. Therefore *gcc* use also *sd* instruction.
+
+***** 4 double
+
+      *Case size is divisible by 4:*
+
+      #+begin_src asm
+      12b6:	f2 0f 10 00          	movsd  (%rax),%xmm0
+      12ba:	f2 0f 59 02          	mulsd  (%rdx),%xmm0
+      12be:	f2 0f 58 c8          	addsd  %xmm0,%xmm1
+      12c2:	f2 0f 10 40 08       	movsd  0x8(%rax),%xmm0
+      12c7:	f2 0f 59 42 08       	mulsd  0x8(%rdx),%xmm0
+      12cc:	f2 0f 58 e0          	addsd  %xmm0,%xmm4
+      12d0:	f2 0f 10 40 10       	movsd  0x10(%rax),%xmm0
+      12d5:	f2 0f 59 42 10       	mulsd  0x10(%rdx),%xmm0
+      12da:	f2 0f 58 d8          	addsd  %xmm0,%xmm3
+      12de:	f2 0f 10 40 18       	movsd  0x18(%rax),%xmm0
+      12e3:	f2 0f 59 42 18       	mulsd  0x18(%rdx),%xmm0
+      12e8:	f2 0f 58 d0          	addsd  %xmm0,%xmm2
+      12ec:	48 83 c0 20          	add    $0x20,%rax
+      12f0:	48 83 c2 20          	add    $0x20,%rdx
+      12f4:	48 39 c8             	cmp    %rcx,%rax
+      12f7:	75 bd                	jne    12b6 <dotprod_4x+0x3d>
+      #+end_src
+
+      *gcc* use *sd* instruction.
+
+      *Case size is not divisible by 4:*
+
+      Same code as above plus :
+
+      #+begin_src asm
+      1319:	f2 0f 10 04 c7       	movsd  (%rdi,%rax,8),%xmm0
+      131e:	f2 41 0f 59 04 c0    	mulsd  (%r8,%rax,8),%xmm0
+      1324:	f2 0f 58 c8          	addsd  %xmm0,%xmm1
+      1328:	48 83 c0 01          	add    $0x1,%rax
+      132c:	48 39 c6             	cmp    %rax,%rsi
+      132f:	75 e8                	jne    1319 <dotprod_4x+0xa0>
+      #+end_src
+
+      *gcc* use *sd* instruction.
+
+***** 8 double
+
+      *Case size is divisible by 8:*
+
+      #+begin_src asm
+      139a:	f2 0f 10 08          	movsd  (%rax),%xmm1
+      139e:	f2 0f 59 0a          	mulsd  (%rdx),%xmm1
+      13a2:	f2 0f 58 c1          	addsd  %xmm1,%xmm0
+      13a6:	f2 0f 10 48 08       	movsd  0x8(%rax),%xmm1
+      13ab:	f2 0f 59 4a 08       	mulsd  0x8(%rdx),%xmm1
+      13b0:	f2 0f 58 f9          	addsd  %xmm1,%xmm7
+      13b4:	f2 0f 10 48 10       	movsd  0x10(%rax),%xmm1
+      13b9:	f2 0f 59 4a 10       	mulsd  0x10(%rdx),%xmm1
+      13be:	f2 0f 58 f1          	addsd  %xmm1,%xmm6
+      13c2:	f2 0f 10 48 18       	movsd  0x18(%rax),%xmm1
+      13c7:	f2 0f 59 4a 18       	mulsd  0x18(%rdx),%xmm1
+      13cc:	f2 0f 58 e9          	addsd  %xmm1,%xmm5
+      13d0:	f2 0f 10 48 20       	movsd  0x20(%rax),%xmm1
+      13d5:	f2 0f 59 4a 20       	mulsd  0x20(%rdx),%xmm1
+      13da:	f2 0f 58 e1          	addsd  %xmm1,%xmm4
+      13de:	f2 0f 10 48 28       	movsd  0x28(%rax),%xmm1
+      13e3:	f2 0f 59 4a 28       	mulsd  0x28(%rdx),%xmm1
+      13e8:	f2 0f 58 d9          	addsd  %xmm1,%xmm3
+      13ec:	f2 0f 10 48 30       	movsd  0x30(%rax),%xmm1
+      13f1:	f2 0f 59 4a 30       	mulsd  0x30(%rdx),%xmm1
+      13f6:	f2 0f 58 d1          	addsd  %xmm1,%xmm2
+      13fa:	f2 0f 10 48 38       	movsd  0x38(%rax),%xmm1
+      13ff:	f2 0f 59 4a 38       	mulsd  0x38(%rdx),%xmm1
+      1404:	f2 44 0f 58 c1       	addsd  %xmm1,%xmm8
+      1409:	48 83 c0 40          	add    $0x40,%rax
+      140d:	48 83 c2 40          	add    $0x40,%rdx
+      1411:	48 39 f0             	cmp    %rsi,%rax
+      1414:	75 84                	jne    139a <dotprod_8x+0x55>
+      #+end_src
+
+      *gcc* use *sd* instruction.
+
+      *Case size is not divisible by 8:*
+
+      Same code as above plus :
+
+      #+begin_src asm
+      1443:	f2 0f 10 0c c7       	movsd  (%rdi,%rax,8),%xmm1
+      1448:	f2 41 0f 59 0c c0    	mulsd  (%r8,%rax,8),%xmm1
+      144e:	f2 0f 58 c1          	addsd  %xmm1,%xmm0
+      1452:	48 83 c0 01          	add    $0x1,%rax
+      1456:	48 39 c1             	cmp    %rax,%rcx
+      1459:	75 e8                	jne    1443 <dotprod_8x+0xfe>
+      #+end_src
+
+      *gcc* use *sd* instruction.
+
+***** 16 double
+
+      *Case size is divisible by 16:*
+
+      #+begin_src asm
+      1501:	f2 0f 10 18          	movsd  (%rax),%xmm3
+      1505:	f2 0f 59 1a          	mulsd  (%rdx),%xmm3
+      1509:	f2 0f 58 c3          	addsd  %xmm3,%xmm0
+      150d:	f2 0f 10 58 08       	movsd  0x8(%rax),%xmm3
+      1512:	f2 0f 59 5a 08       	mulsd  0x8(%rdx),%xmm3
+      1517:	f2 0f 58 d3          	addsd  %xmm3,%xmm2
+      151b:	f2 0f 10 58 10       	movsd  0x10(%rax),%xmm3
+      1520:	f2 0f 59 5a 10       	mulsd  0x10(%rdx),%xmm3
+      1525:	f2 44 0f 58 fb       	addsd  %xmm3,%xmm15
+      152a:	f2 0f 10 58 18       	movsd  0x18(%rax),%xmm3
+      152f:	f2 0f 59 5a 18       	mulsd  0x18(%rdx),%xmm3
+      1534:	f2 44 0f 58 f3       	addsd  %xmm3,%xmm14
+      1539:	f2 0f 10 58 20       	movsd  0x20(%rax),%xmm3
+      153e:	f2 0f 59 5a 20       	mulsd  0x20(%rdx),%xmm3
+      1543:	f2 44 0f 58 eb       	addsd  %xmm3,%xmm13
+      1548:	f2 0f 10 58 28       	movsd  0x28(%rax),%xmm3
+      154d:	f2 0f 59 5a 28       	mulsd  0x28(%rdx),%xmm3
+      1552:	f2 0f 58 cb          	addsd  %xmm3,%xmm1
+      1556:	f2 0f 10 58 30       	movsd  0x30(%rax),%xmm3
+      155b:	f2 0f 59 5a 30       	mulsd  0x30(%rdx),%xmm3
+      1560:	f2 44 0f 58 e3       	addsd  %xmm3,%xmm12
+      1565:	f2 0f 10 58 38       	movsd  0x38(%rax),%xmm3
+      156a:	f2 0f 59 5a 38       	mulsd  0x38(%rdx),%xmm3
+      156f:	f2 44 0f 58 db       	addsd  %xmm3,%xmm11
+      1574:	f2 0f 10 58 40       	movsd  0x40(%rax),%xmm3
+      1579:	f2 0f 59 5a 40       	mulsd  0x40(%rdx),%xmm3
+      157e:	f2 44 0f 58 d3       	addsd  %xmm3,%xmm10
+      1583:	f2 0f 10 58 48       	movsd  0x48(%rax),%xmm3
+      1588:	f2 0f 59 5a 48       	mulsd  0x48(%rdx),%xmm3
+      158d:	f2 44 0f 58 cb       	addsd  %xmm3,%xmm9
+      1592:	f2 0f 10 58 50       	movsd  0x50(%rax),%xmm3
+      1597:	f2 0f 59 5a 50       	mulsd  0x50(%rdx),%xmm3
+      159c:	f2 44 0f 58 c3       	addsd  %xmm3,%xmm8
+      15a1:	f2 0f 10 58 58       	movsd  0x58(%rax),%xmm3
+      15a6:	f2 0f 59 5a 58       	mulsd  0x58(%rdx),%xmm3
+      15ab:	f2 0f 58 fb          	addsd  %xmm3,%xmm7
+      15af:	f2 0f 10 58 60       	movsd  0x60(%rax),%xmm3
+      15b4:	f2 0f 59 5a 60       	mulsd  0x60(%rdx),%xmm3
+      15b9:	f2 0f 58 f3          	addsd  %xmm3,%xmm6
+      15bd:	f2 0f 10 58 68       	movsd  0x68(%rax),%xmm3
+      15c2:	f2 0f 59 5a 68       	mulsd  0x68(%rdx),%xmm3
+      15c7:	f2 0f 58 eb          	addsd  %xmm3,%xmm5
+      15cb:	f2 0f 10 58 70       	movsd  0x70(%rax),%xmm3
+      15d0:	f2 0f 59 5a 70       	mulsd  0x70(%rdx),%xmm3
+      15d5:	f2 0f 58 5c 24 f8    	addsd  -0x8(%rsp),%xmm3
+      15db:	f2 0f 11 5c 24 f8    	movsd  %xmm3,-0x8(%rsp)
+      15e1:	f2 0f 10 58 78       	movsd  0x78(%rax),%xmm3
+      15e6:	f2 0f 59 5a 78       	mulsd  0x78(%rdx),%xmm3
+      15eb:	f2 0f 58 e3          	addsd  %xmm3,%xmm4
+      15ef:	48 83 e8 80          	sub    $0xffffffffffffff80,%rax
+      15f3:	48 83 ea 80          	sub    $0xffffffffffffff80,%rdx
+      15f7:	4c 39 c8             	cmp    %r9,%rax
+      15fa:	0f 85 01 ff ff ff    	jne    1501 <dotprod_16x+0x7a>
+      #+end_src
+
+      *gcc* use *sd* instruction.
+
+      *Case size is not divisible by 16:*
+
+      Same code as above plus :
+
+      #+begin_src asm
+      165a:	f2 0f 10 1c c7       	movsd  (%rdi,%rax,8),%xmm3
+      165f:	f2 41 0f 59 1c c0    	mulsd  (%r8,%rax,8),%xmm3
+      1665:	f2 0f 58 c3          	addsd  %xmm3,%xmm0
+      1669:	48 83 c0 01          	add    $0x1,%rax
+      166d:	48 39 c6             	cmp    %rax,%rsi
+      1670:	75 e8                	jne    165a <dotprod_16x+0x1d3>
+      #+end_src
+
+      *gcc* use *sd* instruction.
+
 *** clang
+**** Scalar
+**** Vector
+***** 2 double
+***** 4 double
+***** 8 double
+***** 16 double
 *** ccl
 ** Light
 *** gcc
