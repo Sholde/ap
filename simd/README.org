@@ -2,10 +2,6 @@
 #+author: Nicolas Bouton
 #+date: 2020
 
-     #+begin_src asm
-
-     #+end_src
-
 * Information
 ** Makefile
 *** Compile
@@ -277,13 +273,22 @@
       *gcc* use *sd* instruction.
 
 *** clang
-**** Scalar
-**** Vector
-***** 2 double
-***** 4 double
-***** 8 double
-***** 16 double
+    
+    *clang* do the same as *gcc*. It don't use *pd* instructions.
+
+*** static vs dynamic
+    
+    No differennce. The main function calls *dotprod* fucntions.
+
 *** ccl
+
+    Vectorized operation :
+
+    | compiler \ code | baseline | vector_2x | vector_4x | vector_8x | vector_16x |
+    |-----------------+----------+-----------+-----------+-----------+------------|
+    | gcc             | no       | no        | no        | no        | no         |
+    | clang           | no       | no        | no        | no        | no         |
+
 ** Light
 *** gcc
 *** clang
