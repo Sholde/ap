@@ -284,15 +284,154 @@
 
     Vectorized operation :
 
-    | compiler \ code | baseline | vector_2x | vector_4x | vector_8x | vector_16x |
-    |-----------------+----------+-----------+-----------+-----------+------------|
-    | gcc             | no       | no        | no        | no        | no         |
-    | clang           | no       | no        | no        | no        | no         |
+    | compiler \ functions | baseline | vector_2x | vector_4x | vector_8x | vector_16x |
+    |----------------------+----------+-----------+-----------+-----------+------------|
+    | gcc                  | no       | no        | no        | no        | no         |
+    | clang                | no       | no        | no        | no        | no         |
 
 ** Light
 *** gcc
+**** Scalar
+
+     #+begin_src asm
+     00000000000014b0 <dotprod>:
+     14b0:	48 85 d2             	test   %rdx,%rdx
+     14b3:	74 2b                	je     14e0 <dotprod+0x30>
+     14b5:	31 c0                	xor    %eax,%eax
+     14b7:	66 0f ef c9          	pxor   %xmm1,%xmm1
+     14bb:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
+     14c0:	f2 0f 10 04 c7       	movsd  (%rdi,%rax,8),%xmm0
+     14c5:	f2 0f 59 04 c6       	mulsd  (%rsi,%rax,8),%xmm0
+     14ca:	48 83 c0 01          	add    $0x1,%rax
+     14ce:	f2 0f 58 c8          	addsd  %xmm0,%xmm1
+     14d2:	48 39 c2             	cmp    %rax,%rdx
+     14d5:	75 e9                	jne    14c0 <dotprod+0x10>
+     14d7:	66 0f 28 c1          	movapd %xmm1,%xmm0
+     14db:	c3                   	retq   
+     14dc:	0f 1f 40 00          	nopl   0x0(%rax)
+     14e0:	66 0f ef c9          	pxor   %xmm1,%xmm1
+     14e4:	66 0f 28 c1          	movapd %xmm1,%xmm0
+     14e8:	c3                   	retq   
+     14e9:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
+     #+end_src
+
+     *gcc* don't use vectorized operation(*pd*). It use *sd* operation.
+
+**** Vector
+
+     For 2 double :
+
+     #+begin_src asm
+    1510:	f2 0f 10 04 c7       	movsd  (%rdi,%rax,8),%xmm0
+    1515:	f2 0f 59 04 c6       	mulsd  (%rsi,%rax,8),%xmm0
+    151a:	f2 0f 58 c8          	addsd  %xmm0,%xmm1
+    151e:	f2 0f 10 44 c7 08    	movsd  0x8(%rdi,%rax,8),%xmm0
+    1524:	f2 0f 59 44 c6 08    	mulsd  0x8(%rsi,%rax,8),%xmm0
+    152a:	48 83 c0 02          	add    $0x2,%rax
+    152e:	f2 0f 58 d0          	addsd  %xmm0,%xmm2
+    1532:	48 39 c2             	cmp    %rax,%rdx
+    1535:	77 d9                	ja     1510 <dotprod_2x+0x20>
+    #+end_src
+
+    *gcc* uses *sd* operation, and also for other vector so i will not
+    show them.
+
 *** clang
+**** Scalar
+
+    Same as *gcc*, uses *sd* operations.
+
+**** Vector
+***** 2 double
+
+      For the vectorized loop :
+
+      #+begin_src asm
+      1270:	66 0f 10 04 c7       	movupd (%rdi,%rax,8),%xmm0
+      1275:	66 0f 10 14 c6       	movupd (%rsi,%rax,8),%xmm2
+      127a:	66 0f 59 d0          	mulpd  %xmm0,%xmm2
+      127e:	66 0f 58 ca          	addpd  %xmm2,%xmm1
+      1282:	48 83 c0 02          	add    $0x2,%rax
+      1286:	48 39 d0             	cmp    %rdx,%rax
+      1289:	72 e5                	jb     1270 <dotprod_2x+0x10>
+      #+end_src
+
+     We can see that *clang* vecorize operation, because we have *pd*
+     instructions like *movupd*, *mulpd* and *addpd*. But it keep 2
+     *multiplication* and *addition* in one turn of loop.
+
+     For the case that we have odd numbers we have the same code plus
+     one scalar instruction for the last one.
+
+***** 4 double
+
+      #+begin_src asm
+      1310:	f2 0f 10 14 c7       	movsd  (%rdi,%rax,8),%xmm2
+      1315:	f2 0f 10 5c c7 08    	movsd  0x8(%rdi,%rax,8),%xmm3
+      131b:	66 0f 16 54 c7 10    	movhpd 0x10(%rdi,%rax,8),%xmm2
+      1321:	f2 0f 10 24 c6       	movsd  (%rsi,%rax,8),%xmm4
+      1326:	f2 0f 10 6c c6 08    	movsd  0x8(%rsi,%rax,8),%xmm5
+      132c:	66 0f 16 64 c6 10    	movhpd 0x10(%rsi,%rax,8),%xmm4
+      1332:	66 0f 59 e2          	mulpd  %xmm2,%xmm4
+      1336:	66 0f 58 cc          	addpd  %xmm4,%xmm1
+      133a:	66 0f 16 5c c7 18    	movhpd 0x18(%rdi,%rax,8),%xmm3
+      1340:	66 0f 16 6c c6 18    	movhpd 0x18(%rsi,%rax,8),%xmm5
+      1346:	66 0f 59 eb          	mulpd  %xmm3,%xmm5
+      134a:	66 0f 58 c5          	addpd  %xmm5,%xmm0
+      134e:	48 83 c0 04          	add    $0x4,%rax
+      1352:	48 39 d0             	cmp    %rdx,%rax
+      1355:	72 b9                	jb     1310 <dotprod_4x+0x20>
+      #+end_src
+
+      Here *clang* vectorized too, but not all. We have 4 *movsd* by
+      turn of loop. And it vectorize with register vector of 2 doule,
+      128 bits size. Therefore it vectorized to about half. It does
+      the same number of *operation* by turn of loop, that is 4
+      multiplication and 4 addition.
+
+***** Other vectorire function
+
+      Same as vector of 4 double.
+
+*** static vs dynamic
+
+    I see that main call *dotprod_8x* and *dotprod_16x* for dynamic.
+
+    #+begin_src asm
+    1a8f:	66 0f 29 7c 24 20    	movapd %xmm7,0x20(%rsp)
+    1a95:	4c 89 f7             	mov    %r14,%rdi
+    1a98:	48 89 de             	mov    %rbx,%rsi
+    1a9b:	4c 89 fa             	mov    %r15,%rdx
+    1a9e:	e8 1d f9 ff ff       	callq  13c0 <dotprod_8x>
+    1aa3:	f2 0f 11 44 24 18    	movsd  %xmm0,0x18(%rsp)
+    1aa9:	4c 89 f7             	mov    %r14,%rdi
+    1aac:	48 89 de             	mov    %rbx,%rsi
+    1aaf:	4c 89 fa             	mov    %r15,%rdx
+    1ab2:	e8 69 fa ff ff       	callq  1520 <dotprod_16x>
+    #+end_src
+
+    And *dotprod_16x* for static.
+
+    #+begin_src asm
+    1b76:	4c 89 60 20          	mov    %r12,0x20(%rax)
+    1b7a:	ba 05 00 00 00       	mov    $0x5,%edx
+    1b7f:	48 89 df             	mov    %rbx,%rdi
+    1b82:	48 89 c6             	mov    %rax,%rsi
+    1b85:	e8 96 f9 ff ff       	callq  1520 <dotprod_16x>
+    #+end_src
+
+    And I don't understand why the other are disapear. I found their
+    name on *debug function*.
+
 *** ccl
+
+    Vectorized operation :
+
+    | compiler \ functions | baseline | vector_2x | vector_4x  | vector_8x  | vector_16x |
+    |----------------------+----------+-----------+------------+------------+------------|
+    | gcc                  | no       | no        | no         | no         | no         |
+    | clang                | no       | yes       | yes (half) | yes (half) | yes (half) |
+
 ** Optimized
 *** gcc
 *** clang
