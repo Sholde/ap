@@ -384,7 +384,7 @@
       #+end_src
 
       Here *clang* vectorized too, but not all. We have 4 *movsd* by
-      turn of loop. And it vectorize with register vector of 2 doule,
+      turn of loop. And it vectorize with register vector of 2 double,
       128 bits size. Therefore it vectorized to about half. It does
       the same number of *operation* by turn of loop, that is 4
       multiplication and 4 addition.
