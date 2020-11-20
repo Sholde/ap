@@ -157,6 +157,8 @@ double dotprod_16x(double *restrict a, double *restrict b, unsigned long long n)
 
 int main(int argc, char **argv)
 {
+  // Dynamic
+  
   // Parse arguments
   unsigned long long n = parse_args(argc, argv);
 
@@ -184,6 +186,34 @@ int main(int argc, char **argv)
   // Free memory
   free(a);
   free(b);
-  
+
+  // Static
+  n = SIZE;
+
+  // Alloc the memory
+  double *c = aligned_alloc(64, n * sizeof(double));
+  double *d = aligned_alloc(64, n * sizeof(double));
+
+  // Init arrays
+  init(c, d, n);
+
+  // Compute
+  res = dotprod(c, d, n);
+  res_2x = dotprod_2x(c, d, n);
+  res_4x = dotprod_4x(c, d, n);
+  res_8x = dotprod_8x(c, d, n);
+  res_16x = dotprod_16x(c, d, n);
+
+  // Print result
+  printf("res = %lf\n", res);
+  printf("res_2x = %lf\n", res_2x);
+  printf("res_4x = %lf\n", res_4x);
+  printf("res_8x = %lf\n", res_8x);
+  printf("res_16x = %lf\n", res_16x);
+
+  // Free memory
+  free(c);
+  free(d);
+
   return 0;
 }
