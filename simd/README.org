@@ -3,13 +3,30 @@
 #+date: 2020
 
 * Information
+** Makefile
+*** Compile
 
-  Just the *install.sh* srcipt must be called.
+    Run the command below to compile the program with *gcc* and *clang*
+    with different optimization. And produce *assembler file*.
 
+    #+begin_src bash
+    $ make
+    #+end_src
+
+   
+*** Clean
+
+    You can also clean the *binary* and *~* file with :
+
+    #+begin_src bash
+    $ make clean
+    #+end_src
+    
 ** Script
-*** install script
+*** Install script
 
-    Compile, desassemble, move *.asm* file and clean binary file.
+    Desassemble *binary* file, and move *assembler* file. This script
+    is called by *make* command.
 
     Usage :
 
@@ -17,45 +34,6 @@
     $ ./install.sh
     #+end_src
 
-*** asm script
-
-   The script *asm.sh* just desassemble all binaries (that *make*
-   command produce) in the directories.
-
-   Usage :
-
-    #+begin_src bash
-    $ ./asm.sh
-    #+end_src
-
-*** move script
-    
-    Move the *.asm* file to *adm* directory.
-
-   Usage :
-
-    #+begin_src bash
-    $ ./move.sh
-    #+end_src
-
-** Makefile
-*** Compile
-
-   Run the command below to compile the program with *gcc* and *clang*
-   with different optimization.
-
-   #+begin_src bash
-   $ make
-   #+end_src
-
-*** Clean   
-
-    You can also clean the folder with :
-
-   #+begin_src bash
-   $ make clean
-   #+end_src
-    
 ** Provide file
 
    There are 3 given files on the folders : *gcc_ver.txt*,

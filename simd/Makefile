@@ -11,9 +11,9 @@ OOFLAGS = -O3
 HOFLAGS = -Ofast
 KOFLAGS = -march=native -mtune=native -Ofast -funroll-loops -finline-functions -flto -ftree-vectorize
 
-.PHONY: clean 
+.PHONY: clean base light opti high kamikaze asm
 
-all: base light opti high kamikaze
+all: base light opti high kamikaze asm
 
 base: dotprod.c
 	$(GCC) $(CFLAGS) $(BOFLAGS) $< -o $@_gcc
@@ -34,6 +34,9 @@ high: dotprod.c
 kamikaze: dotprod.c
 	$(GCC) $(CFLAGS) $(KOFLAGS) $< -o $@_gcc
 	$(CLANG) $(CFLAGS) $(KOFLAGS) $< -o $@_clang
+
+asm:
+	./install.sh
 
 clean:
 	rm -Rf *~ base* light* opti* high* kamikaze*
