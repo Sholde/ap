@@ -315,26 +315,26 @@
      14e9:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
      #+end_src
 
-     *gcc* don't use vectorized operation(*pd*). It use *sd* operation.
+     *gcc* don't use vector instruction(*pd*). It use scalar instruction(*sd*).
 
 **** Vector
 
-     For 2 double :
+     For vector of 2 double :
 
      #+begin_src asm
-    1510:	f2 0f 10 04 c7       	movsd  (%rdi,%rax,8),%xmm0
-    1515:	f2 0f 59 04 c6       	mulsd  (%rsi,%rax,8),%xmm0
-    151a:	f2 0f 58 c8          	addsd  %xmm0,%xmm1
-    151e:	f2 0f 10 44 c7 08    	movsd  0x8(%rdi,%rax,8),%xmm0
-    1524:	f2 0f 59 44 c6 08    	mulsd  0x8(%rsi,%rax,8),%xmm0
-    152a:	48 83 c0 02          	add    $0x2,%rax
-    152e:	f2 0f 58 d0          	addsd  %xmm0,%xmm2
-    1532:	48 39 c2             	cmp    %rax,%rdx
-    1535:	77 d9                	ja     1510 <dotprod_2x+0x20>
-    #+end_src
+     1510:	f2 0f 10 04 c7       	movsd  (%rdi,%rax,8),%xmm0
+     1515:	f2 0f 59 04 c6       	mulsd  (%rsi,%rax,8),%xmm0
+     151a:	f2 0f 58 c8          	addsd  %xmm0,%xmm1
+     151e:	f2 0f 10 44 c7 08    	movsd  0x8(%rdi,%rax,8),%xmm0
+     1524:	f2 0f 59 44 c6 08    	mulsd  0x8(%rsi,%rax,8),%xmm0
+     152a:	48 83 c0 02          	add    $0x2,%rax
+     152e:	f2 0f 58 d0          	addsd  %xmm0,%xmm2
+     1532:	48 39 c2             	cmp    %rax,%rdx
+     1535:	77 d9                	ja     1510 <dotprod_2x+0x20>
+     #+end_src
 
-    *gcc* uses *sd* operation, and also for other vector so i will not
-    show them.
+    *gcc* uses *sd* instruction, and also for others vectors functions
+    so I will not show them.
 
 *** clang
 **** Scalar
