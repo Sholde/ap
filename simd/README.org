@@ -575,7 +575,8 @@
 *** static vs dynamic
 
     The call on main of the function *dotprod_2x* (for vector of 2)
-    disapeared on main functions in assmebler for *gcc*.
+    for static array disapeared on main functions in assmebler for
+    *gcc*.
 
     For *clang* it is almost all call which disapeared.
 
@@ -590,8 +591,85 @@
 
 ** High
 *** gcc
+**** Scalar
+
+     #+begin_src asm
+     15a0:	66 0f 10 04 07       	movupd (%rdi,%rax,1),%xmm0
+     15a5:	66 0f 10 1c 06       	movupd (%rsi,%rax,1),%xmm3
+     15aa:	48 83 c0 10          	add    $0x10,%rax
+     15ae:	66 0f 59 c3          	mulpd  %xmm3,%xmm0
+     15b2:	66 0f 58 d0          	addpd  %xmm0,%xmm2
+     15b6:	48 39 c1             	cmp    %rax,%rcx
+     15b9:	75 e5                	jne    15a0 <dotprod+0x20>
+     #+end_src
+
+     *gcc* finnaly, decided to uses instructions, but it is like
+     scalar instruction because it doesn't uses 2 double on the
+     register. And it keep one *multiplication* and *addition* by turn
+     of loop.
+
+**** Vector
+***** 2 double
+
+     #+begin_src asm
+     1638:	66 0f 10 04 06       	movupd (%rsi,%rax,1),%xmm0
+     163d:	66 0f 10 24 07       	movupd (%rdi,%rax,1),%xmm4
+     1642:	48 83 c1 01          	add    $0x1,%rcx
+     1646:	48 83 c0 10          	add    $0x10,%rax
+     164a:	66 0f 59 c4          	mulpd  %xmm4,%xmm0
+     164e:	66 0f 58 c8          	addpd  %xmm0,%xmm1
+     1652:	48 39 d1             	cmp    %rdx,%rcx
+     1655:	72 e1                	jb     1638 <dotprod_2x+0x28>
+     #+end_src
+
+     *gcc* finnaly, decided to vectorize instructions. Because it uses
+     *pd* instructions and move the iterator 2 times with 2
+     **add*. Therefore it concatenate 2 operations on one instructions.
+     And it keep 2 *multiplication* and *addition* by turn of loop.
+
+***** 4 double
+
+     #+begin_src asm
+     1710:	66 0f 10 04 06       	movupd (%rsi,%rax,1),%xmm0
+     1715:	66 0f 10 34 07       	movupd (%rdi,%rax,1),%xmm6
+     171a:	48 83 c2 01          	add    $0x1,%rdx
+     171e:	66 0f 10 7c 07 10    	movupd 0x10(%rdi,%rax,1),%xmm7
+     1724:	66 0f 59 c6          	mulpd  %xmm6,%xmm0
+     1728:	66 0f 58 d0          	addpd  %xmm0,%xmm2
+     172c:	66 0f 10 44 06 10    	movupd 0x10(%rsi,%rax,1),%xmm0
+     1732:	48 83 c0 20          	add    $0x20,%rax
+     1736:	66 0f 59 c7          	mulpd  %xmm7,%xmm0
+     173a:	66 0f 58 c8          	addpd  %xmm0,%xmm1
+     173e:	48 39 d1             	cmp    %rdx,%rcx
+     1741:	77 cd                	ja     1710 <dotprod_4x+0x30>
+     #+end_src
+
+     *gcc* uses 2 instructions for 4 *multiplications* and the same
+     for *additions*. Therefore it vectorize but it doesn't use 256
+     bit register.
+
+***** 8 and 16 double
+
+      Same as 4 double vector functions.
+
 *** clang
+*** static vs dynamic
+
+    The call on main of the function *dotprod_2x* (for vector of 2)
+    for static array disapeared on main functions in assmebler for
+    *gcc*.
+
+    For *clang* it is almost all call which disapeared.
+
 *** ccl
+
+    Vectorized instruction by functions and compiler :
+
+    | compiler \ functions | baseline | vector_2x | vector_4x  | vector_8x  | vector_16x |
+    |----------------------+----------+-----------+------------+------------+------------|
+    | gcc                  | no       | yes       | yes (half) | yes (half) | yes (half) |
+    | clang                |          |           |            |            |            |
+
 ** Kamikaze
 *** gcc
 *** clang
