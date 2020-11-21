@@ -466,11 +466,15 @@
      1591:	75 dd                	jne    1570 <dotprod+0x20>
      #+end_src
 
-     *gcc* vectorized instructions.
+     I think *gcc* vectorized the multiplication and make 2 operations
+     by turn of loop because we have 2 *additions* wich corresponding
+     at the addition with *d* in *c code*. And the *unpckhpd* be used
+     for recup the second operand for the 2nd addition, bacause
+     *additions* are not vectorized here.
 
 **** Vector
      
-     *gcc* also vectorised vector functions.
+     *gcc* also make the same for vector functions.
 
      For exemple (vector of 2 double) :
 
@@ -496,7 +500,7 @@
      1665:	75 a9                	jne    1610 <dotprod_2x+0x40>
      #+end_src
      
-     Here, it vectorized *multiplication* but not *addition*. It is
+     Here, it vectorized *multiplications* but not *additions*. It is
      the same for others vector functions.
 
 *** clang
@@ -504,10 +508,10 @@
 
     Vectorized instruction by functions and compiler :
 
-    | compiler \ functions | baseline | vector_2x  | vector_4x  | vector_8x  | vector_16x |
-    |----------------------+----------+------------+------------+------------+------------|
-    | gcc                  | yes      | yes (half) | yes (half) | yes (half) | yes (half) |
-    | clang                | no       | no         | no         | no         | no         |
+    | compiler \ functions | baseline   | vector_2x  | vector_4x  | vector_8x  | vector_16x |
+    |----------------------+------------+------------+------------+------------+------------|
+    | gcc                  | yes (half) | yes (half) | yes (half) | yes (half) | yes (half) |
+    | clang                | no         | no         | no         | no         | no         |
 
 ** High
 *** gcc
