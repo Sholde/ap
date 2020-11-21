@@ -529,10 +529,55 @@
      *unroll loop* and make 4 times the operatons on *c code* by turn.
 
 **** Vector
+***** 2 double
+
+     #+begin_src asm
+     1270:	66 0f 10 04 c7       	movupd (%rdi,%rax,8),%xmm0
+     1275:	66 0f 10 14 c6       	movupd (%rsi,%rax,8),%xmm2
+     127a:	66 0f 59 d0          	mulpd  %xmm0,%xmm2
+     127e:	66 0f 58 ca          	addpd  %xmm2,%xmm1
+     1282:	48 83 c0 02          	add    $0x2,%rax
+     1286:	48 39 d0             	cmp    %rdx,%rax
+     1289:	72 e5                	jb     1270 <dotprod_2x+0x10>
+     #+end_src
+
+     *clang* vectorized the loop(*pd* instructions) and do exactly the
+     same numbers of operations than *c code*.
+
+***** 4 double
+
+     #+begin_src asm
+     1310:	f2 0f 10 14 c7       	movsd  (%rdi,%rax,8),%xmm2
+     1315:	f2 0f 10 5c c7 08    	movsd  0x8(%rdi,%rax,8),%xmm3
+     131b:	66 0f 16 54 c7 10    	movhpd 0x10(%rdi,%rax,8),%xmm2
+     1321:	f2 0f 10 24 c6       	movsd  (%rsi,%rax,8),%xmm4
+     1326:	f2 0f 10 6c c6 08    	movsd  0x8(%rsi,%rax,8),%xmm5
+     132c:	66 0f 16 64 c6 10    	movhpd 0x10(%rsi,%rax,8),%xmm4
+     1332:	66 0f 59 e2          	mulpd  %xmm2,%xmm4
+     1336:	66 0f 58 cc          	addpd  %xmm4,%xmm1
+     133a:	66 0f 16 5c c7 18    	movhpd 0x18(%rdi,%rax,8),%xmm3
+     1340:	66 0f 16 6c c6 18    	movhpd 0x18(%rsi,%rax,8),%xmm5
+     1346:	66 0f 59 eb          	mulpd  %xmm3,%xmm5
+     134a:	66 0f 58 c5          	addpd  %xmm5,%xmm0
+     134e:	48 83 c0 04          	add    $0x4,%rax
+     1352:	48 39 d0             	cmp    %rdx,%rax
+     1355:	72 b9                	jb     1310 <dotprod_4x+0x20>
+     #+end_src
+
+     *clang* vectorized *multiplications* and *additions* but not
+     *move* instructions. And it respect the number of operations by
+     turn of loop of *c code*.
+
+***** 8 and 16 double
+
+      Same as 4 double.
+
 *** static vs dynamic
 
     The call on main of the function *dotprod_2x* (for vector of 2)
-    disapear on main functions in assmebler for *gcc*.
+    disapeared on main functions in assmebler for *gcc*.
+
+    For *clang* it is almost all call which disapeared.
 
 *** ccl
 
@@ -541,7 +586,7 @@
     | compiler \ functions | baseline   | vector_2x  | vector_4x  | vector_8x  | vector_16x |
     |----------------------+------------+------------+------------+------------+------------|
     | gcc                  | yes (half) | yes (half) | yes (half) | yes (half) | yes (half) |
-    | clang                | no         | no         | no         | no         | no         |
+    | clang                | no         | yes        | yes (half) | yes (half) | yes (half) |
 
 ** High
 *** gcc
