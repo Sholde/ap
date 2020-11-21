@@ -76,13 +76,14 @@
      #+end_src
 
      We can see that on the loop which begin at *11b2* and finish at
-     *11c7*, *gcc* don't use vecotize instruction. (because it is *sd*
-     = scalar double)
+     *11c7*, *gcc* doesn't use vector instruction (because it is *sd*
+     = scalar double), even if it uses *xmm* register wich are 128
+     bits.
 
 **** Vector
 ***** 2 double
 
-      *Case size is divisible by 2:*
+      *Case - size is divisible by 2:*
 
       #+begin_src asm
       11e9:	f2 0f 10 04 c7       	movsd  (%rdi,%rax,8),%xmm0
@@ -96,16 +97,16 @@
       120e:	77 d9                	ja     11e9 <dotprod_2x+0x15>
       #+end_src
 
-      We can see that *gcc* use also *sd* instruction.
+      We can see that *gcc* uses also *sd* instructions.
 
-      *Case size is not divisible by 2:*
+      *Case - size is not divisible by 2:*
 
       It is the same code but at the end of the boucle we do one more
-      multiplication. Therefore *gcc* use also *sd* instruction.
+      multiplication. Therefore *gcc* uses also *sd* instructions.
 
 ***** 4 double
 
-      *Case size is divisible by 4:*
+      *Case - size is divisible by 4:*
 
       #+begin_src asm
       12b6:	f2 0f 10 00          	movsd  (%rax),%xmm0
@@ -126,9 +127,10 @@
       12f7:	75 bd                	jne    12b6 <dotprod_4x+0x3d>
       #+end_src
 
-      *gcc* use *sd* instruction.
+      *gcc* uses *sd* instructions and make 4 *multiplications* and
+      *additions* by turn of loop.
 
-      *Case size is not divisible by 4:*
+      *Case - size is not divisible by 4:*
 
       Same code as above plus :
 
@@ -141,11 +143,12 @@
       132f:	75 e8                	jne    1319 <dotprod_4x+0xa0>
       #+end_src
 
-      *gcc* use *sd* instruction.
+      *gcc* uses *sd* instructions and make 4 *multiplications* and
+      *additions* by turn of loop.
 
 ***** 8 double
 
-      *Case size is divisible by 8:*
+      *Case - size is divisible by 8:*
 
       #+begin_src asm
       139a:	f2 0f 10 08          	movsd  (%rax),%xmm1
@@ -178,9 +181,10 @@
       1414:	75 84                	jne    139a <dotprod_8x+0x55>
       #+end_src
 
-      *gcc* use *sd* instruction.
+      *gcc* uses *sd* instructions and make 8 *multiplications* and
+      *additions* by turn of loop.
 
-      *Case size is not divisible by 8:*
+      *Case - size is not divisible by 8:*
 
       Same code as above plus :
 
@@ -193,11 +197,12 @@
       1459:	75 e8                	jne    1443 <dotprod_8x+0xfe>
       #+end_src
 
-      *gcc* use *sd* instruction.
+      *gcc* uses *sd* instructions and make 8 *multiplications* and
+      *additions* by turn of loop.
 
 ***** 16 double
 
-      *Case size is divisible by 16:*
+      *Case - size is divisible by 16:*
 
       #+begin_src asm
       1501:	f2 0f 10 18          	movsd  (%rax),%xmm3
@@ -255,9 +260,10 @@
       15fa:	0f 85 01 ff ff ff    	jne    1501 <dotprod_16x+0x7a>
       #+end_src
 
-      *gcc* use *sd* instruction.
+      *gcc* uses *sd* instructions and make 16 *multiplications* and
+      *additions* by turn of loop.
 
-      *Case size is not divisible by 16:*
+      *Case - size is not divisible by 16:*
 
       Same code as above plus :
 
@@ -270,11 +276,14 @@
       1670:	75 e8                	jne    165a <dotprod_16x+0x1d3>
       #+end_src
 
-      *gcc* use *sd* instruction.
+      *gcc* uses *sd* instructions and make 16 *multiplications* and
+      *additions* by turn of loop.
 
 *** clang
     
-    *clang* does the same as *gcc*. It don't use *pd* instructions.
+    *clang* does the same as *gcc*. It don't use *pd* instructions and
+    make as many of operations by turn of loop that the code is
+    supposed to do.
 
 *** static vs dynamic
     
@@ -315,7 +324,10 @@
      14e9:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
      #+end_src
 
-     *gcc* don't use vector instruction(*pd*). It use scalar instruction(*sd*).
+     *gcc* doesn't use vector instruction(*pd*). It uses scalar
+     instruction(*sd*). And it make 1 *multiplications* and
+     *additions* by turn of loop(begin at *14c0* and finish at *14d5*)
+     like the *c code*.
 
 **** Vector
 
@@ -333,13 +345,14 @@
      1535:	77 d9                	ja     1510 <dotprod_2x+0x20>
      #+end_src
 
-    *gcc* uses *sd* instruction, and also for others vectors functions
-    so I will not show them.
+    *gcc* uses *sd* instructions and make as many operations than *c
+    code*. It is also the same for others vectors functions so I will
+    not show them.
 
 *** clang
 **** Scalar
 
-    Same as *gcc*, uses *sd* operations.
+    Same as *gcc*, uses *sd* instructions.
 
 **** Vector
 ***** 2 double
@@ -383,15 +396,16 @@
       1355:	72 b9                	jb     1310 <dotprod_4x+0x20>
       #+end_src
 
-      Here *clang* vectorized too, but not all. We have 4 *movsd* by
-      turn of loop. And it vectorize with register vector of 2 double,
-      128 bits size. Therefore it vectorized to about half. It does
-      the same number of *operation* by turn of loop, that is 4
-      multiplication and 4 addition.
+      Here *clang* vectorized too, but not *move* instructions. We
+      have 4 *movsd* by turn of loop. And it vectorize with register
+      vector of 2 double, 128 bits size. Therefore it vectorized to
+      about half. It does the same number of *operation* by turn of
+      loop, that is 4 *multiplications* and *additions*.
 
 ***** Other vectorire function
 
       Same as vector of 4 double.
+
 **** main
 
     I see that main call *dotprod_8x* and *dotprod_16x* for dynamic.
