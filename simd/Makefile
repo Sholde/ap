@@ -13,7 +13,7 @@ KOFLAGS = -march=native -mtune=native -Ofast -funroll-loops -finline-functions -
 
 .PHONY: clean base light opti high kamikaze asm
 
-all: base light opti high kamikaze asm
+all: base light opti high kamikaze
 
 base: dotprod.c
 	$(GCC) $(CFLAGS) $(BOFLAGS) $< -o $@_gcc

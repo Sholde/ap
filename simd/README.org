@@ -7,13 +7,12 @@
 *** Compile
 
     Run the command below to compile the program with *gcc* and *clang*
-    with different optimization. And produce *assembler file*.
+    with different optimization.
 
     #+begin_src bash
     $ make
     #+end_src
 
-   
 *** Clean
 
     You can also clean the *binary* and *~* file with :
@@ -32,6 +31,12 @@
 
     #+begin_src bash
     $ ./install.sh
+    #+end_src
+
+    Also called by :
+
+    #+begin_src bash
+    $ make asm
     #+end_src
 
 ** Provide file
