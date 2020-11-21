@@ -78,7 +78,8 @@
      We can see that on the loop which begin at *11b2* and finish at
      *11c7*, *gcc* doesn't use vector instruction (because it is *sd*
      = scalar double), even if it uses *xmm* register wich are 128
-     bits.
+     bits. Because we need to have *pd* instructions *+* vector
+     registers to have vector instructions.
 
 **** Vector
 ***** 2 double
