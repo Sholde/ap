@@ -370,7 +370,7 @@
       1289:	72 e5                	jb     1270 <dotprod_2x+0x10>
       #+end_src
 
-     We can see that *clang* vecorize operation, because we have *pd*
+     We can see that *clang* vecorized instructions, because we have *pd*
      instructions like *movupd*, *mulpd* and *addpd*. But it keep 2
      *multiplication* and *addition* in one turn of loop.
 
@@ -398,7 +398,7 @@
       #+end_src
 
       Here *clang* vectorized too, but not *move* instructions. We
-      have 4 *movsd* by turn of loop. And it vectorize with register
+      have 4 *movsd* by turn of loop. And it vectorized with register
       vector of 2 double, 128 bits size. Therefore it vectorized to
       about half. It does the same number of *operation* by turn of
       loop, that is 4 *multiplications* and *additions*.
@@ -504,6 +504,36 @@
      the same for others vector functions.
 
 *** clang
+**** Scalar
+
+     #+begin_src asm
+     11e0:	f2 0f 10 0c cf       	movsd  (%rdi,%rcx,8),%xmm1
+     11e5:	f2 0f 10 54 cf 08    	movsd  0x8(%rdi,%rcx,8),%xmm2
+     11eb:	f2 0f 59 0c ce       	mulsd  (%rsi,%rcx,8),%xmm1
+     11f0:	f2 0f 59 54 ce 08    	mulsd  0x8(%rsi,%rcx,8),%xmm2
+     11f6:	f2 0f 58 c8          	addsd  %xmm0,%xmm1
+     11fa:	f2 0f 10 5c cf 10    	movsd  0x10(%rdi,%rcx,8),%xmm3
+     1200:	f2 0f 59 5c ce 10    	mulsd  0x10(%rsi,%rcx,8),%xmm3
+     1206:	f2 0f 58 d1          	addsd  %xmm1,%xmm2
+     120a:	f2 0f 10 44 cf 18    	movsd  0x18(%rdi,%rcx,8),%xmm0
+     1210:	f2 0f 59 44 ce 18    	mulsd  0x18(%rsi,%rcx,8),%xmm0
+     1216:	f2 0f 58 da          	addsd  %xmm2,%xmm3
+     121a:	f2 0f 58 c3          	addsd  %xmm3,%xmm0
+     121e:	48 83 c1 04          	add    $0x4,%rcx
+     1222:	48 39 ca             	cmp    %rcx,%rdx
+     1225:	75 b9                	jne    11e0 <dotprod+0x30>
+     #+end_src
+
+     *clang* doesn't vectorized instructions. It uses *sd*
+     instructions with *multiplications* instruction adress. But it
+     *unroll loop* and make 4 times the operatons on *c code* by turn.
+
+**** Vector
+*** static vs dynamic
+
+    The call on main of the function *dotprod_2x* (for vector of 2)
+    disapear on main functions in assmebler for *gcc*.
+
 *** ccl
 
     Vectorized instruction by functions and compiler :
