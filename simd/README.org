@@ -723,16 +723,27 @@
 ** Kamikaze
 *** gcc
 **** Scalar
+
+     *gcc* replace the loop in scalar function *dotprod* by a multiple
+     of instrucions. Therfore it is not vectorized because they are
+     just add.
+
 **** Vector
+
+     *gcc* uses *ymm* registers wich are 256 bits and all instrucions
+     are *pd*. Therfore it vectorised.
+
 *** clang
-**** Scalar
-**** Vector
+    
+    *clang* put all functions on main functions and completely
+    vectorize all of them with *ymm* register.
+
 *** ccl
-** Conclusion
 
-   _Vectorization :_
+    Vectorized instruction by functions and compiler :
 
-   | compiler \ opti | base | light | opti | high | kamikaze |
-   |-----------------+------+-------+------+------+----------|
-   | gcc             | -    | -     | -    | -    | -        |
-   | clang           | -    | -     | -    | -    | -        |
+    | compiler \ functions | baseline | vector_2x | vector_4x | vector_8x | vector_16x |
+    |----------------------+----------+-----------+-----------+-----------+------------|
+    | gcc                  | no       | yes       | yes       | yes       | yes        |
+    | clang                | yes      | yes       | yes       | yes       | yes        |
+
