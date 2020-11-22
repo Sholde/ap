@@ -51,10 +51,11 @@
   - gcc
   - clang
     
-  In my *cpuinfo.txt* file, we can see that I have *sse*
+  In my *cpuinfo.txt* file, we can see that I have *sse* and *avx*
   flags. Therefore my *cpu* have *xmm* and *ymm* wich corresponding
   respectively at 128 and 256 bits register, wich can contain 2 and 4
-  double respectively (because double take 64 bits).
+  double respectively (because double take 64 bits). (sse => xmm, avx
+  => ymm)
 
   We must to have vectors registers like *xmm* or *ymm*, and vectors
   instructions like *addpd* or all others instructions with *pd* at
