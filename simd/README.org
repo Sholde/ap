@@ -639,7 +639,7 @@
 
      *gcc* finnaly, decided to uses *pd* instructions, and it make 2
      operations by turn of loop because it move of *16
-     bytes*. Therefore it vectoried.
+     bytes*. Therefore it vectorized.
 
 **** Vector
 ***** 2 double
@@ -682,7 +682,7 @@
      #+end_src
 
      *gcc* uses 2 instructions for 4 *multiplications* and the same
-     for *additions*. Therefore it vectorize but it doesn't use 256
+     for *additions*. Therefore it vectorized but it didn't use 256
      bit register *ymm*.
 
      And for the iterator it is the same as 2 double.
