@@ -56,8 +56,8 @@
   respectively at 128 and 256 bits register, wich can contain 2 and 4
   double respectively (because double take 64 bits).
 
-  We must to have vectors registers like *xmm* and *ymm*, and vectors
-  instructions like *addpd* and all others instructions with *bd* at
+  We must to have vectors registers like *xmm* or *ymm*, and vectors
+  instructions like *addpd* or all others instructions with *bd* at
   the end, to have vectors operations.
 
   For information, when I said the register move of 4 bytes for
