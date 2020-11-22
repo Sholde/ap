@@ -51,6 +51,15 @@
   - gcc
   - clang
     
+  In my *cpuinfo.txt* file, we can see that I have *sse*
+  flags. Therefore my *cpu* have *xmm* and *ymm* wich corresponding
+  respectively at 128 and 256 bits register, wich can contain 2 and 4
+  double respectively (because double take 64 bits).
+
+  We must to have vectors registers like *xmm* and *ymm*, and vectors
+  instructions like *addpd* and all others instructions with *bd* at
+  the end, to have vectors operations.
+
   For information, when I said the register move of 4 bytes for
   example that is we add 4 in the register because behind it access at
   bytes.
@@ -756,7 +765,7 @@
 **** Scalar
 
      *gcc* replace the loop in scalar function *dotprod* by a multiple
-     of instrucions. Therefore it is not vectorized because they are
+     of instructions. Therefore it is not vectorized because they are
      just simple *add* and *move* instructions.
 
 **** Vector
