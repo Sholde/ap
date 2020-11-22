@@ -52,7 +52,7 @@
   - clang
     
   For information, when I said the register move of 4 bytes for
-  example that is we add 4 at the register because behind it access at
+  example that is we add 4 in the register because behind it access at
   bytes.
 
 ** Code
@@ -89,7 +89,7 @@
      bits (wich can contain 2 double : 2 x 64 = 128). We need to have
      *pd* instructions *+* vector registers to have vector
      instructions. And in the instuction *add* at line *11c0*, we can
-     see that we add 1 at the register *rax*.
+     see that we add 1 in the register *rax*.
 
 **** Vector
 ***** 2 double
@@ -109,7 +109,7 @@
       #+end_src
 
       We can see that *gcc* uses also *sd* instructions. There are 2
-      *multiplications* and 2 *additions* and add 2 at the register
+      *multiplications* and 2 *additions* and add 2 in the register
       *rax* at line *1207*. It didn't vectorize.
 
       *Case - size is not divisible by 2:*
@@ -345,7 +345,7 @@
      *gcc* doesn't use vector instructions(*pd*). It uses scalar
      instruction(*sd*). And it make 1 *multiplications* and
      *additions* by turn of loop(begin at *14c0* and finish at *14d5*)
-     like the *c code*, bacause it add 1 at the register *rax*.
+     like the *c code*, bacause it add 1 in the register *rax*.
 
 **** Vector
 
@@ -364,7 +364,7 @@
      #+end_src
 
     *gcc* uses *sd* instructions and make as many operations than *c
-    code*, because it add 2 at the register *rax*. It is also the same
+    code*, because it add 2 in the register *rax*. It is also the same
     for others vectors functions so I will not show them.
 
 *** clang
@@ -390,7 +390,7 @@
      We can see that *clang* vecorized instructions, because we have *pd*
      instructions like *movupd*, *mulpd* and *addpd*. But it keep 2
      *multiplication* and *addition* in one turn of loop. (because it
-     add 2 at the register *rax*)
+     add 2 in the register *rax*)
 
      For the case that we have odd numbers we have the same code plus
      one scalar instruction for the last one.
@@ -420,7 +420,7 @@
       vector of 2 double, 128 bits size. Therefore it vectorized to
       about half. It does the same number of *operation* by turn of
       loop, that is 4 *multiplications* and *additions*. (because it
-      add 4 at the register *rax*)
+      add 4 in the register *rax*)
 
 ***** Other vectorire function
 
@@ -522,7 +522,7 @@
      
      Here, it vectorized *multiplications* but not *additions*, and it
      does 4 operations instead of 2 like *c code* because it add *32
-     bytes* at the register *rax*. It is the same for others vector
+     bytes* in the register *rax*. It is the same for others vector
      functions.
 
 *** clang
@@ -728,7 +728,7 @@
 
      *clang* vectorized. 2 *multiplications* in 1 instructions and 2
      *additions* in 1 instructions. We move of 2 on the loop (line
-     *1312 with the add of 2 at the register *rax*).
+     *1312 with the add of 2 in the register *rax*).
 
 ***** Others vector functions
 
