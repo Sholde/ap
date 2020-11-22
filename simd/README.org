@@ -24,8 +24,7 @@
 ** Script
 *** Install script
 
-    Desassemble *binary* file, and move *assembler* file. This script
-    is called by *make* command.
+    Desassemble *binary* file, and move *assembler* file.
 
     Usage :
 
@@ -33,7 +32,7 @@
     $ ./install.sh
     #+end_src
 
-    Also called by :
+    You can also called by :
 
     #+begin_src bash
     $ make asm
@@ -41,7 +40,7 @@
 
 ** Provide file
 
-   There are 3 given files on the folders : *gcc_ver.txt*,
+   There are 3 given files on the folder : *gcc_ver.txt*,
    *clang_ver.txt* and *cpuinfo.txt*.
 
 * Answer
@@ -52,6 +51,10 @@
   - gcc
   - clang
     
+  For information, when I said the register move of 4 bytes for
+  example that is we add 4 at the register because behind it access at
+  bytes.
+
 ** Code
 
    In my c code, I let user to choice one size of the matrix to see
@@ -84,7 +87,9 @@
      *11c7*, *gcc* doesn't use vector instruction (because it is *sd*
      = scalar double), even if it uses *xmm* register wich are 128
      bits. Because we need to have *pd* instructions *+* vector
-     registers to have vector instructions.
+     registers to have vector instructions. And in the instuction
+     *add* at line *11c0*, we can see that wa add 1 at the register
+     *rax*.
 
 **** Vector
 ***** 2 double
@@ -103,13 +108,15 @@
       120e:	77 d9                	ja     11e9 <dotprod_2x+0x15>
       #+end_src
 
-      We can see that *gcc* uses also *sd* instructions. It didn't vectorized.
+      We can see that *gcc* uses also *sd* instructions. There are 2
+      *multiplications* and 2 *additions* and 1 *add* of the value 2
+      at line *1207*. It didn't vectorize.
 
       *Case - size is not divisible by 2:*
 
       It is the same code but at the end of the boucle we do one more
       multiplication. Therefore *gcc* uses also *sd* instructions and
-      it didn't vectorized too.
+      it didn't vectorize too.
 
 ***** 4 double
 
@@ -135,7 +142,9 @@
       #+end_src
 
       *gcc* uses *sd* instructions and make 4 *multiplications* and
-      *additions* by turn of loop. It didn't vectorized.
+      *additions* by turn of loop. We see that we move of *32 bytes*
+      by turn, so we do the same number of operatins that *c code*. It
+      *didn't vectorize.
 
       *Case - size is not divisible by 4:*
 
@@ -150,8 +159,8 @@
       132f:	75 e8                	jne    1319 <dotprod_4x+0xa0>
       #+end_src
 
-      *gcc* uses *sd* instructions and make 4 *multiplications* and
-      *additions* by turn of loop. It didn't vectorized too.
+      *gcc* uses *sd* instructions, we add 1 at the iterator register
+      *rax*. It didn't vectorize too.
 
 ***** 8 double
 
@@ -189,7 +198,8 @@
       #+end_src
 
       *gcc* uses *sd* instructions and make 8 *multiplications* and
-      *additions* by turn of loop. It didn't vectorized.
+      *additions* by turn of loop. And we move of *64 bytes* by turn,
+      so we do 8 operations like *c code*. It didn't vectorize.
 
       *Case - size is not divisible by 8:*
 
@@ -204,8 +214,8 @@
       1459:	75 e8                	jne    1443 <dotprod_8x+0xfe>
       #+end_src
 
-      *gcc* uses *sd* instructions and make 8 *multiplications* and
-      *additions* by turn of loop. It didn't vectorized too.
+      *gcc* uses *sd* instructions, and we add 1 at the iterator
+      register. It didn't vectorize too.
 
 ***** 16 double
 
@@ -267,8 +277,9 @@
       15fa:	0f 85 01 ff ff ff    	jne    1501 <dotprod_16x+0x7a>
       #+end_src
 
-      *gcc* uses *sd* instructions and make 16 *multiplications* and
-      *additions* by turn of loop. It didn't vectorized.
+      Same as others vector functions, but here we substract the
+      register, but we move also of *128 bytes*. *gcc* didn't
+      vectorize.
 
       *Case - size is not divisible by 16:*
 
@@ -283,14 +294,14 @@
       1670:	75 e8                	jne    165a <dotprod_16x+0x1d3>
       #+end_src
 
-      *gcc* uses *sd* instructions and make 16 *multiplications* and
-      *additions* by turn of loop. It didn't vectorized too.
+      *gcc* uses *sd* instructions and at 1 of the iterator register
+      *rax*. It didn't vectorize too.
 
 *** clang
     
-    *clang* does the same as *gcc*. It don't use *pd* instructions and
-    make as many of operations by turn of loop that the code is
-    supposed to do. It didn't vectorized.
+    *clang* does the same as *gcc*. It doesn't use *pd* instructions and
+    make as many operations by turn of loop that the code is
+    supposed to do. It didn't vectorize.
 
 *** static vs dynamic
     
@@ -331,10 +342,10 @@
      14e9:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
      #+end_src
 
-     *gcc* doesn't use vector instruction(*pd*). It uses scalar
+     *gcc* doesn't use vector instructions(*pd*). It uses scalar
      instruction(*sd*). And it make 1 *multiplications* and
      *additions* by turn of loop(begin at *14c0* and finish at *14d5*)
-     like the *c code*.
+     like the *c code*, bacause it add 1 at the register *rax*.
 
 **** Vector
 
@@ -353,8 +364,8 @@
      #+end_src
 
     *gcc* uses *sd* instructions and make as many operations than *c
-    code*. It is also the same for others vectors functions so I will
-    not show them.
+    code*, because it add 2 at the register *rax*. It is also the same
+    for others vectors functions so I will not show them.
 
 *** clang
 **** Scalar
@@ -378,7 +389,8 @@
 
      We can see that *clang* vecorized instructions, because we have *pd*
      instructions like *movupd*, *mulpd* and *addpd*. But it keep 2
-     *multiplication* and *addition* in one turn of loop.
+     *multiplication* and *addition* in one turn of loop. (because it
+     add 2 at the register *rax*)
 
      For the case that we have odd numbers we have the same code plus
      one scalar instruction for the last one.
@@ -407,7 +419,8 @@
       have 4 *movsd* by turn of loop. And it vectorized with register
       vector of 2 double, 128 bits size. Therefore it vectorized to
       about half. It does the same number of *operation* by turn of
-      loop, that is 4 *multiplications* and *additions*.
+      loop, that is 4 *multiplications* and *additions*. (because it
+      add 4 at the register *rax*)
 
 ***** Other vectorire function
 
@@ -476,7 +489,8 @@
      by turn of loop because we have 2 *additions* wich corresponding
      at the addition with *d* in *c code*. And the *unpckhpd* be used
      for recup the second operand for the 2nd addition, bacause
-     *additions* are not vectorized here.
+     *additions* are not vectorized here. We can also see that we move
+     of *16 bytes* on the register *rax*, so 2 double on the register.
 
 **** Vector
      
@@ -506,8 +520,10 @@
      1665:	75 a9                	jne    1610 <dotprod_2x+0x40>
      #+end_src
      
-     Here, it vectorized *multiplications* but not *additions*. It is
-     the same for others vector functions.
+     Here, it vectorized *multiplications* but not *additions*, and it
+     does 4 operations instead of 2 like *c code* because it add *32
+     bytes* at the register *rax*. It is the same for others vector
+     functions.
 
 *** clang
 **** Scalar
@@ -548,7 +564,8 @@
      #+end_src
 
      *clang* vectorized the loop(*pd* instructions) and do exactly the
-     same numbers of operations than *c code*.
+     same numbers of operations than *c code*. It add 2 at the
+     iterator register *rax*.
 
 ***** 4 double
 
@@ -572,7 +589,8 @@
 
      *clang* vectorized *multiplications* and *additions* but not
      *move* instructions. And it respect the number of operations by
-     turn of loop of *c code*.
+     turn of loop of *c code*. It add 4 at the iterator register
+     *rax*.
 
 ***** 8 and 16 double
 
@@ -609,10 +627,9 @@
      15b9:	75 e5                	jne    15a0 <dotprod+0x20>
      #+end_src
 
-     *gcc* finnaly, decided to uses instructions, but it is like
-     scalar instruction because it doesn't uses 2 double on the
-     register. And it keep one *multiplication* and *addition* by turn
-     of loop.
+     *gcc* finnaly, decided to uses *pd* instructions, and it make 2
+     operations by turn of loop because it move of *16
+     bytes*. Therefore it vectoried.
 
 **** Vector
 ***** 2 double
@@ -630,8 +647,12 @@
 
      *gcc* finnaly, decided to vectorize instructions. Because it uses
      *pd* instructions and move the iterator 2 times with 2
-     **add*. Therefore it concatenate 2 operations on one instructions.
+     *add*. Therefore it concatenate 2 operations on one instructions.
      And it keep 2 *multiplication* and *addition* by turn of loop.
+
+     We can also see that it uses two register for iterator loop, one
+     *rcx* for the counter and the other *rax* to access to good
+     memory case because it movve it of 16 bytes*.
 
 ***** 4 double
 
@@ -652,7 +673,9 @@
 
      *gcc* uses 2 instructions for 4 *multiplications* and the same
      for *additions*. Therefore it vectorize but it doesn't use 256
-     bit register.
+     bit register *ymm*.
+
+     And for the iterator it is the same as 2 double.
 
 ***** 8 and 16 double
 
@@ -685,9 +708,10 @@
 
      We have 4 *multiplications* and *additions* instructions, and all
      instructions are *pd*. But I can't prove if it uses 2 double on
-     registers. So I suppose it does. Therfore *clang* vectorized the
-     loop and make 8 *operations* by turn, that is 8 *multiplications*
-     and 8 *additions*.
+     registers because I don't understand the 2 *add* instructions at
+     line *126e* and *1272*. So I suppose it does. Therefore *clang*
+     vectorized the loop and make 8 *operations* by turn, that is 8
+     *multiplications* and 8 *additions*.
 
 **** Vector
 ***** 2 double
@@ -703,7 +727,8 @@
      #+end_src
 
      *clang* vectorized. 2 *multiplications* in 1 instructions and 2
-     *additions* in 1 instructions.
+     *additions* in 1 instructions. We move of 2 on the loop (line
+     *1312 with the add of 2 at the register *rax*).
 
 ***** Others vector functions
 
@@ -712,7 +737,7 @@
 *** static vs dynamic
 
     The call on main of the function *dotprod_2x* (for vector of 2)
-    for static array disapeared on main functions in assmebler for
+    for static array disapeared on main functions in assembler for
     *gcc*.
 
     For *clang* it is almost all call which disapeared.
@@ -723,7 +748,7 @@
 
     | compiler \ functions | baseline | vector_2x | vector_4x  | vector_8x  | vector_16x |
     |----------------------+----------+-----------+------------+------------+------------|
-    | gcc                  | no       | yes       | yes (half) | yes (half) | yes (half) |
+    | gcc                  | yes      | yes       | yes        | yes        | yes        |
     | clang                | yes      | yes       | yes (half) | yes (half) | yes (half) |
 
 ** Kamikaze
@@ -731,13 +756,13 @@
 **** Scalar
 
      *gcc* replace the loop in scalar function *dotprod* by a multiple
-     of instrucions. Therfore it is not vectorized because they are
-     just add.
+     of instrucions. Therefore it is not vectorized because they are
+     just simple *add* and *move* instructions.
 
 **** Vector
 
      *gcc* uses *ymm* registers wich are 256 bits and all instrucions
-     are *pd*. Therfore it vectorised.
+     are *pd*. Therefore it vectorised.
 
 *** clang
     
