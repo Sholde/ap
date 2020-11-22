@@ -159,7 +159,7 @@
       132f:	75 e8                	jne    1319 <dotprod_4x+0xa0>
       #+end_src
 
-      *gcc* uses *sd* instructions, we add 1 at the iterator register
+      *gcc* uses *sd* instructions, we add 1 in the iterator register
       *rax*. It didn't vectorize too.
 
 ***** 8 double
@@ -214,7 +214,7 @@
       1459:	75 e8                	jne    1443 <dotprod_8x+0xfe>
       #+end_src
 
-      *gcc* uses *sd* instructions, and we add 1 at the iterator
+      *gcc* uses *sd* instructions, and we add 1 in the iterator
       register. It didn't vectorize too.
 
 ***** 16 double
@@ -564,7 +564,7 @@
      #+end_src
 
      *clang* vectorized the loop(*pd* instructions) and do exactly the
-     same numbers of operations than *c code*. It add 2 at the
+     same numbers of operations than *c code*. It add 2 in the
      iterator register *rax*.
 
 ***** 4 double
@@ -589,7 +589,7 @@
 
      *clang* vectorized *multiplications* and *additions* but not
      *move* instructions. And it respect the number of operations by
-     turn of loop of *c code*. It add 4 at the iterator register
+     turn of loop of *c code*. It add 4 in the iterator register
      *rax*.
 
 ***** 8 and 16 double
