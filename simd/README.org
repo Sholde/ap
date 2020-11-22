@@ -57,7 +57,7 @@
   double respectively (because double take 64 bits).
 
   We must to have vectors registers like *xmm* or *ymm*, and vectors
-  instructions like *addpd* or all others instructions with *bd* at
+  instructions like *addpd* or all others instructions with *pd* at
   the end, to have vectors operations.
 
   For information, when I said the register move of 4 bytes for
