@@ -58,7 +58,7 @@
 
   We must to have vectors registers like *xmm* or *ymm*, and vectors
   instructions like *addpd* or all others instructions with *pd* at
-  the end, to have vectors operations.
+  the end, and also move to certain number to have vectors operations.
 
   For information, when I said the register move of 4 bytes for
   example that is we add 4 in the register because behind it access at
@@ -97,7 +97,7 @@
      = scalar double), even if it uses *xmm* register wich are 128
      bits (wich can contain 2 double : 2 x 64 = 128). We need to have
      *pd* instructions *+* vector registers to have vector
-     instructions. And in the instuction *add* at line *11c0*, we can
+     operations. And in the instuction *add* at line *11c0*, we can
      see that we add 1 in the register *rax*.
 
 **** Vector
@@ -661,7 +661,7 @@
 
      We can also see that it uses two register for iterator loop, one
      *rcx* for the counter and the other *rax* to access to good
-     memory case because it movve it of 16 bytes*.
+     memory case because it move it of *16 bytes*.
 
 ***** 4 double
 
@@ -762,21 +762,23 @@
 
 ** Kamikaze
 *** gcc
-**** Scalar
 
-     *gcc* replace the loop in scalar function *dotprod* by a multiple
-     of instructions. Therefore it is not vectorized because they are
-     just simple *add* and *move* instructions.
+    *gcc* uses *ymm* registers wich are 256 bits and all instrucions
+    are *pd* instructions for all versions of *dotprod*
+    functions. Therefore it vectorised.
 
-**** Vector
-
-     *gcc* uses *ymm* registers wich are 256 bits and all instrucions
-     are *pd*. Therefore it vectorised.
+    And it replace the call of function *dotprod* (scalar / one
+    operation) and the half of the function *dotprod_2x* wich are a
+    vector of 2 *double* in *main* function.
 
 *** clang
     
-    *clang* put all functions on main functions and completely
-    vectorize all of them with *ymm* register.
+    *clang* uses *ymm* registers wich are 256 bits and all instrucions
+    are *pd* instructions for all versions of *dotprod*
+    functions. Therefore it vectorised.
+
+    And it replace the call of these functions by place the code in
+    *main* fucntion.
 
 *** ccl
 
@@ -784,6 +786,6 @@
 
     | compiler \ functions | baseline | vector_2x | vector_4x | vector_8x | vector_16x |
     |----------------------+----------+-----------+-----------+-----------+------------|
-    | gcc                  | no       | yes       | yes       | yes       | yes        |
+    | gcc                  | yes      | yes       | yes       | yes       | yes        |
     | clang                | yes      | yes       | yes       | yes       | yes        |
 
