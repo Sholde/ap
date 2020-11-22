@@ -44,7 +44,7 @@
    *clang_ver.txt* and *cpuinfo.txt*.
 
 * Answer
-** Introduction
+** Introduction / Information
 
   Here I will compare *two compiler* by optimization flags.
   
@@ -62,7 +62,7 @@
 
   For information, when I said the register move of 4 bytes for
   example that is we add 4 in the register because behind it access at
-  bytes.
+  bytes. And when I said operations I mean *d += a * b*.
 
 ** Code
 
