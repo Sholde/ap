@@ -86,10 +86,10 @@
      We can see that on the loop which begin at *11b2* and finish at
      *11c7*, *gcc* doesn't use vector instruction (because it is *sd*
      = scalar double), even if it uses *xmm* register wich are 128
-     bits. Because we need to have *pd* instructions *+* vector
-     registers to have vector instructions. And in the instuction
-     *add* at line *11c0*, we can see that wa add 1 at the register
-     *rax*.
+     bits (wich can contain 2 double : 2 x 64 = 128). We need to have
+     *pd* instructions *+* vector registers to have vector
+     instructions. And in the instuction *add* at line *11c0*, we can
+     see that we add 1 at the register *rax*.
 
 **** Vector
 ***** 2 double
@@ -109,8 +109,8 @@
       #+end_src
 
       We can see that *gcc* uses also *sd* instructions. There are 2
-      *multiplications* and 2 *additions* and 1 *add* of the value 2
-      at line *1207*. It didn't vectorize.
+      *multiplications* and 2 *additions* and add 2 at the register
+      *rax* at line *1207*. It didn't vectorize.
 
       *Case - size is not divisible by 2:*
 
