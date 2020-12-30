@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-11-16 Mon 19:35 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TD SIMD</title>
+<meta name="generator" content="Org mode" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">TD SIMD</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orga817902">1. Introduction</a></li>
+<li><a href="#org8b145bd">2. Travail a effectuer</a>
+<ul>
+<li><a href="#org27f7245">2.1. Code</a></li>
+<li><a href="#org0f2d3d3">2.2. Options de compilation</a></li>
+</ul>
+</li>
+<li><a href="#orgb5e032f">3. Rendu</a></li>
+<li><a href="#org7582eb5">4. References:</a></li>
+</ul>
+</div>
+</div>
+<p>
+<span class="underline">Directives</span>:
+</p>
+
+<ul class="org-ul">
+<li>Ce TD sera a rendre pour au plus tard Dimanche 00:00 (minuit) sur mon courriel UVSQ: <i>mohammed-salah.ibnamar@uvsq.fr</i> avec comme objet: <b><code>[AP TD_simd - NOM PRENOM]</code></b></li>
+</ul>
+
+<p>
+<span class="underline">Notes</span>:
+</p>
+
+<ul class="org-ul">
+<li>Vous pouvez effectuer votre exploration sur une VM car l'execution du code n'est pas importante.</li>
+<li>Evitez de copier du code, je le verrai tres rapidement :)</li>
+</ul>
+
+<div id="outline-container-orga817902" class="outline-2">
+<h2 id="orga817902"><span class="section-number-2">1</span> Introduction</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+L'objectif de ce TD est d'explorer le jeu d'instructions SIMD present 
+sur les processeurs x86 (Intel et AMD) dont vous disposez.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8b145bd" class="outline-2">
+<h2 id="org8b145bd"><span class="section-number-2">2</span> Travail a effectuer</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org27f7245" class="outline-3">
+<h3 id="org27f7245"><span class="section-number-3">2.1</span> Code</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Vous devez implementer plusieurs versions du code <b>dotprod</b> ci-dessous en deroulant autant de fois 
+que vous desirez la boucle interne et comparer les codes assembleurs produits par le compilateur 
+pour les differentes versions avec differentes options de compilation.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c">
+<span style="color: #98f5ff;">double</span> <span style="color: #daa520;">dotprod</span>(<span style="color: #98f5ff;">double</span> *<span style="color: #00bfff;">restrict</span> <span style="color: #4eee94;">a</span>, <span style="color: #98f5ff;">double</span> *<span style="color: #00bfff;">restrict</span> <span style="color: #4eee94;">b</span>, <span style="color: #98f5ff;">unsigned</span> <span style="color: #98f5ff;">long</span> <span style="color: #98f5ff;">long</span> <span style="color: #4eee94;">n</span>)
+{
+    <span style="color: #98f5ff;">double</span> <span style="color: #4eee94;">d</span> = 0.0;
+
+    <span style="color: #00bfff;">for</span> (<span style="color: #98f5ff;">unsigned</span> <span style="color: #98f5ff;">long</span> <span style="color: #98f5ff;">long</span> <span style="color: #4eee94;">i</span> = 0; i &lt; n; i++)
+       d += a[i] * b[i];
+
+    <span style="color: #00bfff;">return</span> d;
+}
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org0f2d3d3" class="outline-3">
+<h3 id="org0f2d3d3"><span class="section-number-3">2.2</span> Options de compilation</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+<span class="underline">Vous pouvez utiliser un ou plusieurs compilateurs, par exemple</span>: 
+</p>
+
+<ul class="org-ul">
+<li>GNU C Compiler <b>gcc</b></li>
+<li>Intel C Compiler <b>icc</b></li>
+<li>LLVM <b>clang</b></li>
+<li>AMD Optimizing C Compiler <b>aocc</b>.</li>
+</ul>
+
+<p>
+<span class="underline">Il faudra compiler le programme en suivant les etapes suivantes (pour <b>gcc</b> et <b>clang</b>)</span>:
+</p>
+
+<ul class="org-ul">
+<li><span class="underline">Version de base</span>: -O1</li>
+<li><span class="underline">Version legerement optimisee</span>: -O2</li>
+<li><span class="underline">Version optimisee</span>: -O3</li>
+<li><span class="underline">Version fortement optimisee</span>: -Ofast</li>
+<li><span class="underline">Version kamikaze</span>: -march=native -mtune=native -Ofast -funroll-loops -finline-functions -flto -ftree-vectorize</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb5e032f" class="outline-2">
+<h2 id="orgb5e032f"><span class="section-number-2">3</span> Rendu</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Vous devez fournir une archive contenant les codes sources et les codes assembleurs analyses en plus d'un <b>README</b> qui fournit
+des explications pour chacune des versions de la fonction et si les instructions SIMD x86 (jeux d'instructions SSE et AVX) ont ete 
+utilisees de facon scalaire (i.e. add[sd] ou add[ss]) ou vectorielle (i.e. add[pd] ou add[ps]).
+</p>
+
+<ul class="org-ul">
+<li>[ss | sd]: <b>ss</b> pour <b>scalar</b> <b>simple</b> precision et <b>sd</b> pour <b>scalar</b> <b>double</b> precision</li>
+<li>[ps | pd]: <b>ps</b> pour <b>packed</b> <b>simple</b> precision et <b>pd</b> pour <b>packed</b> <b>double</b> precision</li>
+</ul>
+
+<p>
+Il est preferable de creer un <b>makefile</b> avec une regle par version.
+</p>
+
+<p>
+Il faudra aussi fournir un fichier contenant la version du compilateur utilise:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">
+<span style="color: #7f7f7f;">#</span><span style="color: #7f7f7f;">Pour GCC</span>
+$ gcc --version &gt; gcc_ver.txt
+
+<span style="color: #7f7f7f;">#</span><span style="color: #7f7f7f;">Pour clang</span>
+$ clang --version &gt; clang_ver.txt
+
+</pre>
+</div>
+
+<p>
+Et un fichier contenant les informations sur votre processeur:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">
+$ cat /proc/cpuinfo &gt; cpuinfo.txt
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7582eb5" class="outline-2">
+<h2 id="org7582eb5"><span class="section-number-2">4</span> References:</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li><span class="underline">RTFM</span>: man gcc</li>
+
+<li><a href="https://gcc.godbolt.org/">https://gcc.godbolt.org/</a></li>
+<li><a href="https://software.intel.com/sites/landingpage/IntrinsicsGuide/">https://software.intel.com/sites/landingpage/IntrinsicsGuide/</a></li>
+<li><a href="https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html">https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Created: 2020-11-16 Mon 19:35</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

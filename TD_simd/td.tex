@@ -1,0 +1,139 @@
+% Created 2020-11-16 Mon 19:35
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\date{\today}
+\title{TD SIMD}
+\hypersetup{
+ pdfauthor={},
+ pdftitle={TD SIMD},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 27.1 (Org mode 9.3)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\uline{Directives}:
+
+\begin{itemize}
+\item Ce TD sera a rendre pour au plus tard Dimanche 00:00 (minuit) sur mon courriel UVSQ: \emph{mohammed-salah.ibnamar@uvsq.fr} avec comme objet: \textbf{\texttt{[AP TD\_simd - NOM PRENOM]}}
+\end{itemize}
+
+\uline{Notes}:
+
+\begin{itemize}
+\item Vous pouvez effectuer votre exploration sur une VM car l'execution du code n'est pas importante.
+\item Evitez de copier du code, je le verrai tres rapidement :)
+\end{itemize}
+
+\section{Introduction}
+\label{sec:orgad478f1}
+
+L'objectif de ce TD est d'explorer le jeu d'instructions SIMD present 
+sur les processeurs x86 (Intel et AMD) dont vous disposez.
+
+\section{Travail a effectuer}
+\label{sec:org1a77e54}
+\subsection{Code}
+\label{sec:org763d1f1}
+
+Vous devez implementer plusieurs versions du code \textbf{dotprod} ci-dessous en deroulant autant de fois 
+que vous desirez la boucle interne et comparer les codes assembleurs produits par le compilateur 
+pour les differentes versions avec differentes options de compilation.
+
+\begin{verbatim}
+
+double dotprod(double *restrict a, double *restrict b, unsigned long long n)
+{
+    double d = 0.0;
+
+    for (unsigned long long i = 0; i < n; i++)
+       d += a[i] * b[i];
+
+    return d;
+}
+
+\end{verbatim}
+
+\subsection{Options de compilation}
+\label{sec:orgae66d41}
+
+\uline{Vous pouvez utiliser un ou plusieurs compilateurs, par exemple}: 
+
+\begin{itemize}
+\item GNU C Compiler \textbf{gcc}
+\item Intel C Compiler \textbf{icc}
+\item LLVM \textbf{clang}
+\item AMD Optimizing C Compiler \textbf{aocc}.
+\end{itemize}
+
+\uline{Il faudra compiler le programme en suivant les etapes suivantes (pour \textbf{gcc} et \textbf{clang})}:
+
+\begin{itemize}
+\item \uline{Version de base}: -O1
+\item \uline{Version legerement optimisee}: -O2
+\item \uline{Version optimisee}: -O3
+\item \uline{Version fortement optimisee}: -Ofast
+\item \uline{Version kamikaze}: -march=native -mtune=native -Ofast -funroll-loops -finline-functions -flto -ftree-vectorize
+\end{itemize}
+
+\section{Rendu}
+\label{sec:org60c2437}
+
+Vous devez fournir une archive contenant les codes sources et les codes assembleurs analyses en plus d'un \textbf{README} qui fournit
+des explications pour chacune des versions de la fonction et si les instructions SIMD x86 (jeux d'instructions SSE et AVX) ont ete 
+utilisees de facon scalaire (i.e. add[sd] ou add[ss]) ou vectorielle (i.e. add[pd] ou add[ps]).
+
+\begin{itemize}
+\item\relax [ss | sd]: \textbf{ss} pour \textbf{scalar} \textbf{simple} precision et \textbf{sd} pour \textbf{scalar} \textbf{double} precision
+\item\relax [ps | pd]: \textbf{ps} pour \textbf{packed} \textbf{simple} precision et \textbf{pd} pour \textbf{packed} \textbf{double} precision
+\end{itemize}
+
+Il est preferable de creer un \textbf{makefile} avec une regle par version.
+
+Il faudra aussi fournir un fichier contenant la version du compilateur utilise:
+
+\begin{verbatim}
+
+#Pour GCC
+$ gcc --version > gcc_ver.txt
+
+#Pour clang
+$ clang --version > clang_ver.txt
+
+\end{verbatim}
+
+Et un fichier contenant les informations sur votre processeur:
+
+\begin{verbatim}
+
+$ cat /proc/cpuinfo > cpuinfo.txt
+
+\end{verbatim}
+
+\section{References:}
+\label{sec:org42d1b5f}
+
+\begin{itemize}
+\item \uline{RTFM}: man gcc
+
+\item \url{https://gcc.godbolt.org/}
+\item \url{https://software.intel.com/sites/landingpage/IntrinsicsGuide/}
+\item \url{https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html}
+\end{itemize}
+\end{document}
