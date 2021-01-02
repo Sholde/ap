@@ -81,3 +81,15 @@
     librairies cryptographiques les utilisent de plus en plus.
 
 ** Modélisation des performances
+
+   Les modèles de performances les plus notables :
+   - Hockney model
+   - LogP model
+   - LogGP model
+   - PLogP model
+
+   Nous allons montré par la suite que le modèle de *Hockney* peut
+   être utilisé pour les paramètres Ping Pong chiffré.
+
+   Les communicatoion chiffré peuvent être vu comme des simples
+   communications MPI sur un canal authentifié et/ou privée.
