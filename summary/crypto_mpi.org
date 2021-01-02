@@ -93,3 +93,31 @@
 
    Les communicatoion chiffré peuvent être vu comme des simples
    communications MPI sur un canal authentifié et/ou privée.
+
+* Contexte
+** Schéma de chiffrement
+*** Une vue à vole d'oiseau du chiffrement
+
+    Un schéma symétrique de chiffrement est divisé en 3 phase :
+    - la génération de la clé
+    - le chiffrement
+    - le déchiffrement
+
+    A chaque fois que l'on veut chiffrer un message on a besoin du
+    message et de la clé, ainsi que pour déchiffrer, on dit que c'est
+    un schéma symétrique car la même clé permet de chiffrer et de
+    déchiffrer.
+
+    Il y a différent type de schéma au sein des chiffrements
+    symétriques comme le chiffrement par blocks. Mais tous les schéma
+    symétriques n'ont pas le même taux de sécurité. Par exemple le
+    chiffrement pas block tel *ECB* n'est pas sécurisé.
+
+    Il y a d'autres paramètres comme l'intégrité et la performances,
+    pour toutes ces raisons nous avons choisis le schéma CGM qui
+    propose la vie privée et l'intégrité des messages, la performances
+    ainsi d'avoir l'avantage de n'avoir aucune connaissance techniques
+    pour comprendre notre travail.
+
+*** Aperçu de GCM
+** Librairies Cryptographiques
