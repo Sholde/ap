@@ -30,7 +30,7 @@
   Les librairies cryptographiques modernes utilisent les librairies
   cité ci-dessus qui ont été validé dans un standart.
 
-  Le but est de testé les 4 librairies cryptographiques sur 2 types de
+  Le but est de tester les 4 librairies cryptographiques sur 2 types de
   réseaux différent sur les communications MPI.
 
   Pour obtenir des gains théorique nous allons séparé les
