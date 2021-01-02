@@ -1,4 +1,4 @@
-#+title:Performance Evaluation and Modeling of Cryptographic Libraries for MPI Communications
+#+title:Evaluation des Performances et Modelisation Librairies Cryptographiques pour les Communications MPI
 #+author:Sholde
 #+date:2021
 
