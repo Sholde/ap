@@ -33,8 +33,8 @@
   Le but est de testé les 4 librairies cryptographiques sur 2 types de
   réseaux différent sur les communications MPI.
 
-  Pour des gains théorique nous allons séparé les communication point
-  à point MPI en 2 paramètres :
+  Pour obtenir des gains théorique nous allons séparé les
+  communication point à point MPI en 2 paramètres :
   
   - une unique communication point à point comme un test de Ping-Pong
   - de multiple communications en concurence
@@ -43,3 +43,41 @@
   nous allons nous interresser aux performance ainsi qu'u éventuelle
   technique d'optimization pour amèliorer ces performances.
 
+* Travail en relation
+** Systèmes antérieurs à la cryptographie *MPI*
+   
+   Il exeiste des systèmes qui ont les deux problèmes de vulnaribilité
+   suivant :
+   - la vie privée
+   - intégrité des donnée
+
+*** Vie privée
+
+    La vie privé est le but principale du projet, mais est impartaite
+    dû à l'insécurité ou l'abus des algorithmes cryptographiques. Par
+    exemple le fait ce créer une librairie *MPI* avec un schéma de
+    chiffrement simple comme *ECB*.
+
+*** Intégrité
+
+    Différentes options ont été proposés.
+    Le premier choix pour sécurisé l'intégrité des messages serait
+    d'ajuter une signature mais les schéma de signature digitales
+    actuelles coûtent trop cher.
+    Le deuxième serait de faire un *checksum* sur tout les messages
+    mais il faudrai utilisé un schéma plus compliqué qu'un simple
+    schéma de chiffrement par block en chaîne.
+    Une dernière option était de chiffrer les données avec un mode
+    *ECB* mais cela n'apporte pas l'intégrité du message.
+
+*** A noté
+
+    Ces insécurités ne sont pas présentes dans la litératur. Néanmoins
+    les communication MPI ont besoin d'assurer la vie privée et
+    l'intégrité des messages.
+
+    De plus les instructions cryptographiques proposé par les
+    différent constructeurs de CPU deviennet omniprésent et les
+    librairies cryptographiques les utilisent de plus en plus.
+
+** Modélisation des performances
