@@ -1,0 +1,45 @@
+#+title:Performance Evaluation and Modeling of Cryptographic Libraries for MPI Communications
+#+author:Sholde
+#+date:2021
+
+* Variables de test
+
+  Utilisation de 4 librairies de cryptographie :
+
+  - OpenSSL
+  - BoringSSL
+  - Libsodium
+  - CryptoPP
+
+  Utilisation de 2 différent système de réseaux :
+  
+  - Ethernet
+  - InfiniBand
+
+* Introduction
+
+  Aujourd'hui les cloud utilisent des appliction du HPC avec MPI et
+  ont besoin d'assuré la vie privé et l'intégrité des informations. Le
+  fait de sécurisé la librairie MPI est donc un bon choix mais
+  différentes failles ont été trouvé dans les premières versions.
+
+  De plus pour accélerer les chiffrements et déchiffrements les
+  construceurs de processeurs ont intégré des instructions dans le
+  CPU.
+
+  Les librairies cryptographiques modernes utilisent les librairies
+  cité ci-dessus qui ont été validé dans un standart.
+
+  Le but est de testé les 4 librairies cryptographiques sur 2 types de
+  réseaux différent sur les communications MPI.
+
+  Pour des gains théorique nous allons séparé les communication point
+  à point MPI en 2 paramètres :
+  
+  - une unique communication point à point comme un test de Ping-Pong
+  - de multiple communications en concurence
+
+  Avec notre modèle très simple de communication point à point MPI
+  nous allons nous interresser aux performance ainsi qu'u éventuelle
+  technique d'optimization pour amèliorer ces performances.
+
