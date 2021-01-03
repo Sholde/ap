@@ -185,7 +185,7 @@
       suivant la taille du message :
       - 1 B < taille < 1 MB : envoie 10 000 fois
       - 1 MB < taille < 2 MB : envoie 1 000 fois
-    - *OSU micro-analyse:* mesuere de performance des communications non
+    - *OSU micro-analyse:* mesure de performance des communications non
       bloquantes. Envoie 64 message par itération pour 100 itération et
       attends une réponse à chaque itération.
     - *Analyse des NAS parralèles:* mesure des performance de chiffrement
@@ -213,3 +213,85 @@
     est le même pour nos 2 tailles de clé : 128 et 256 bits.
 
 ** Résultat Ethernet
+*** Chiffrement-Déchiffrement
+
+    Le classement est le suivant
+      1. BoringSSL
+      2. Libsodium
+      3. CryptoPP
+
+*** Ping-Pong
+
+    Meilleur performance pour des petites tailles de messages ne
+    dépassant pas 1 KB.
+
+*** Messages larges
+
+    Toutes les librairies ont des performances catastrophique par
+    rapport à la *baseline* (qui est l'envoie d'un message non
+    chiffré) qui peut s'expliquer par :
+    - le coût du chiffrement-déchiffrement
+    - le coût des communications MPI
+
+*** Messages petits
+
+    Nos 4 librairies ont des performances raisonables.
+*** Bande passante multi-pair OSU
+
+    Plus la taille du message est grande plus la puissance de calcul
+    augmente et peux chevaucher avec les communication MPI et
+    d'utiliser toute la bande passante.
+
+    BoringSSL a besoin de plusieur pair pour être efficace.
+
+*** Communication collective
+
+    Comparaison de *BoringSSL* et *Libsodium* pour un message de
+    *2MB* :
+    - BoringSSL à une bande passante *2.37* plus rapide
+    - BoringSSL prend *2.03* de temps de moins
+
+    Pour *BoringSSL*, le chiffrement d'un message et le déchiffrement
+    pour une taille de *16 KB* et de *2 MB* est le même.
+
+    *BoringSSL* est plus rapide que *CryptoPP*.
+
+*** Analyse des NAS
+
+    Rien compris.
+
+** Résultat Infiniband
+*** Chiffrement-Déchiffrement
+
+    Le compilateur *MVAPICH2-2.3* donne de meilleur performance que
+    *gcc*.
+
+*** Ping Pong
+
+    Comme pour le réseux *Ethernet*, les messages de tailles moyennes
+    et grandes sont beacoup plus bas que la *baseline*, mais c'est
+    encore pire.
+
+    Pour les petites tailles de message c'est un peu meilleur, mais même
+    pour *BoringSSL* les performnaces ne sont pas bonne.
+
+*** Bande passante multi-pair OSU
+
+    Comme pour le réseaux *Ethernet* plus il y a de pair, plus la
+    bande passante des libraires est proche la *baseline*.
+
+    Mais pour les messages de petites tailles, losqu'il y a 8 pair la
+    bande passante est étranglé.
+
+*** Communication Collective
+
+    Suit également les performance du réseaux *Ethernet* mais comme la
+    latence de l'Infiniband est plus basse, la surcharge est bien
+    pire.
+
+*** Analyse des NAS
+
+    Grâce au nouveau compilateur, la librairie *CryptoPP* offre de
+    meilleurs performances.
+
+* Modelisation des communication MPI point à point chiffré
