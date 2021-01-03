@@ -159,35 +159,57 @@
   n'abordons pas les subtilités bas niveaux.
 
 * Experience
+** Introduction
 
   Nous allons évalué les perfomances de chaque librairies pour
   laquelle utilisé avec les communications *MPI*.
 
-** Equipement du système
+*** Equipement du système
 
-   - CPU: Intel Xeon E5-2620 v4 2.10 GHz
-   - Memoire: DDR4 RAM 64 GB
-   - OS: CentOS 7.6
-   - Réseaux: 
-     - Ethernet (Intel 82599ES SFI/SFP+)
-     - InfiniBand GDR one (Mellanox MT25408A0-FCC-QI ConnectX)
-   - Compilation:
-     - MPICH
-     - MVAPICH
-     - Niveau d'optimisation: -O2
+    - CPU: Intel Xeon E5-2620 v4 2.10 GHz
+    - Memoire: DDR4 RAM 64 GB
+    - OS: CentOS 7.6
+    - Réseaux: 
+      - Ethernet (Intel 82599ES SFI/SFP+)
+      - InfiniBand GDR one (Mellanox MT25408A0-FCC-QI ConnectX)
+    - Compilation:
+      - MPICH
+      - MVAPICH
+      - Niveau d'optimisation: -O2
 
-** Analyse comparatives
+*** Analyse comparatives
 
-   - *Chiffrement-Déchiffrement:* étude de performance de 500 000
-     chiffrement et déchiffrement
-   - *Ping-Pong:* mesure de performance des communications bloquantes et
-     suivant la taille du message :
-     - 1 B < taille < 1 MB : envoie 10 000 fois
-     - 1 MB < taille < 2 MB : envoie 1 000 fois
-   - *OSU micro-analyse:* mesuere de performance des communications non
-     bloquantes. Envoie 64 message par itération pour 100 itération et
-     attends une réponse à chaque itération.
-   - *Analyse des NAS parralèles:* mesure des performance de chiffrement
-     avec MPI dans des applications en utilisant une taille de *Class
-     C* pour :
-     - BT, CG, FT, IS, MG et SP
+    - *Chiffrement-Déchiffrement:* étude de performance de 500 000
+      chiffrement et déchiffrement
+    - *Ping-Pong:* mesure de performance des communications bloquantes et
+      suivant la taille du message :
+      - 1 B < taille < 1 MB : envoie 10 000 fois
+      - 1 MB < taille < 2 MB : envoie 1 000 fois
+    - *OSU micro-analyse:* mesuere de performance des communications non
+      bloquantes. Envoie 64 message par itération pour 100 itération et
+      attends une réponse à chaque itération.
+    - *Analyse des NAS parralèles:* mesure des performance de chiffrement
+      avec MPI dans des applications en utilisant une taille de *Class
+      C* pour :
+      - BT, CG, FT, IS, MG et SP
+
+*** Méthodologie de l'ananlyse
+
+    Nous devons avoir une dérivation standart inférieur à 5% qui
+    correspond à un interval de confiance de 99%.
+
+    Analyse comparative utilisé: Ping-Pong, OSU and NAS.
+
+    Différent paramètres testé: 
+    - 4 rank/4 node
+    - 16 rank/ 4 node
+    - 16 rank/8 node
+    - 64 rank/8 node
+
+*** Ce que nous relevons
+
+    BoringSSL et OpenSSL délivre les même résultat ce qui n'est pas
+    surprenant car *BoringSSL* est un fork de *OpenSSL*. Et le résultat
+    est le même pour nos 2 tailles de clé : 128 et 256 bits.
+
+** Résultat Ethernet
