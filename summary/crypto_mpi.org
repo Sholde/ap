@@ -159,4 +159,18 @@
 
 * Experience
 
+  Nous allons évalué les perfomances de chaque librairies pour
+  laquelle utilisé avec les communications *MPI*.
 
+** Equipement du système
+
+   - CPU: Intel Xeon E5-2620 v4 2.10 GHz
+   - Memoire: DDR4 RAM 64 GB
+   - OS: CentOS 7.6
+   - Réseaux: 
+     - Ethernet (Intel 82599ES SFI/SFP+)
+     - InfiniBand GDR one (Mellanox MT25408A0-FCC-QI ConnectX)
+   - Compilation:
+     - MPICH
+     - MVAPICH
+     - Niveau d'optimisation: -O2
