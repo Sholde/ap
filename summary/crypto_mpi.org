@@ -295,3 +295,43 @@
     meilleurs performances.
 
 * Modelisation des communication MPI point à point chiffré
+
+  Parmaètres:
+  - pair simple point à point (Ping Pong)
+  - pair multiple point à point (OSU)
+
+  Modèles:
+  - Hockney
+  - max-rate
+
+** Pair simple
+*** Modelisation de la communication
+
+    Les communications MPI bloque les performances car elles sont les
+    plus couteuse et le chiffrement-déchiffrement est rapide.
+
+*** Modelisation du chiffrement et du déchiffrement
+
+    C'est intéressant de s'interresser au temps de
+    chiffrement-déchiffrement seulement.
+
+*** Modelisation du la communication chiffré
+
+    Etape:
+    1. chiffré le message
+    2. envoyé le message
+    3. déchiffré le message
+
+    En comparant les résultat obtenu et le modèle nous obtnenons a peu
+    près les bon résultat pour les 2 types de réseaux et les 3
+    librairies BoringSSL, Libsodium et CryptoPP. OpenSSL ayant les
+    même résultat que BoringSSL, ils n'ont pas été divulgué.
+
+** Pair multiple
+
+   On considère la performance de pair en concurence pour des
+   communications chiffré MPI point à point comme l'ananlyse OSU.
+
+*** Modelisation de la communication
+*** Modelisation du chiffrement et du déchiffrement
+*** Modelisation du la communication chiffré    
