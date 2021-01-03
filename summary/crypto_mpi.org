@@ -120,4 +120,13 @@
     pour comprendre notre travail.
 
 *** Aperçu de GCM
+    
+    Nous allons utilisé le chiffrement par block AES, avec 2
+    différentes tailles de clé : 128 et 256 bits, respectivement pour
+    la performance et la sécurité.
+
+    De plus dans l'algoritmhe AES le message chiffré à 16 octets de
+    plus que le message clair dû à l'algorithme qui utilise un
+    compteur pour identifier les messages.
+
 ** Librairies Cryptographiques
