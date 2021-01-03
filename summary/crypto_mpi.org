@@ -125,7 +125,7 @@
     différentes tailles de clé : 128 et 256 bits, respectivement pour
     la performance et la sécurité.
 
-    De plus dans l'algoritmhe AES le message chiffré à 16 octets de
+    De plus dans l'algoritmhe AES le message chiffré à 28 octets de
     plus que le message clair dû à l'algorithme qui utilise un
     compteur pour identifier les messages.
 
@@ -145,6 +145,7 @@
 
    *CryptoPP* est une librairie cryptographique pour le language *C++*
     adopté par *Microsoft* et *Steam*.
+
 * MPI avec des communications chiffré
 
   Nous avons implémenté une librairie MPI avec des communications
@@ -174,3 +175,19 @@
      - MPICH
      - MVAPICH
      - Niveau d'optimisation: -O2
+
+** Analyse comparatives
+
+   - *Chiffrement-Déchiffrement:* étude de performance de 500 000
+     chiffrement et déchiffrement
+   - *Ping-Pong:* mesure de performance des communications bloquantes et
+     suivant la taille du message :
+     - 1 B < taille < 1 MB : envoie 10 000 fois
+     - 1 MB < taille < 2 MB : envoie 1 000 fois
+   - *OSU micro-analyse:* mesuere de performance des communications non
+     bloquantes. Envoie 64 message par itération pour 100 itération et
+     attends une réponse à chaque itération.
+   - *Analyse des NAS parralèles:* mesure des performance de chiffrement
+     avec MPI dans des applications en utilisant une taille de *Class
+     C* pour :
+     - BT, CG, FT, IS, MG et SP
