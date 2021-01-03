@@ -310,10 +310,14 @@
     Les communications MPI bloque les performances car elles sont les
     plus couteuse et le chiffrement-déchiffrement est rapide.
 
+    Temps = latence + bande passante asymptotique
+
 *** Modelisation du chiffrement et du déchiffrement
 
     C'est intéressant de s'interresser au temps de
     chiffrement-déchiffrement seulement.
+
+    Temps = surcharge initial + taux de chiffrement-déchiffrement
 
 *** Modelisation du la communication chiffré
 
@@ -321,6 +325,8 @@
     1. chiffré le message
     2. envoyé le message
     3. déchiffré le message
+
+    Temps = Temps communication + Temps chiffrement-déchiffrement
 
     En comparant les résultat obtenu et le modèle nous obtnenons a peu
     près les bon résultat pour les 2 types de réseaux et les 3
@@ -333,5 +339,8 @@
    communications chiffré MPI point à point comme l'ananlyse OSU.
 
 *** Modelisation de la communication
+    
+    
+
 *** Modelisation du chiffrement et du déchiffrement
 *** Modelisation du la communication chiffré    
