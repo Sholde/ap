@@ -130,3 +130,18 @@
     compteur pour identifier les messages.
 
 ** Librairies Cryptographiques
+
+   Nos 4 librairies cryptographiques sont publiques et beaucoup
+   utilisé.
+
+   *OpenSSL* étant la plus populaire, de nombreuses vulnaribilité ont
+   été trouvé. Mais elle implémente les protocoles *TLS* et *SSL*.
+
+   *BoringSSL* est un fork de OpenSSL par *Google* pour leurs produits
+   tel que : Chrome/Chromium et Android.
+
+   *Libsodium* a pour objectif la sécurité et la facilité
+   d'utilisation. Son avantage est sa portabilité.
+
+   *CryptoPP* est une librairie cryptographique pour le language *C++*
+    adopté par *Microsoft* et *Steam*.
