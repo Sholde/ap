@@ -145,3 +145,18 @@
 
    *CryptoPP* est une librairie cryptographique pour le language *C++*
     adopté par *Microsoft* et *Steam*.
+* MPI avec des communications chiffré
+
+  Nous avons implémenté une librairie MPI avec des communications
+  chiffré avec AES-GCM pour nos 2 tailles de clés et nos 4 librairies.
+
+  Les clés sont en clair dans le code sources pour le moment car le
+  but est de testé les performances des librairies cryptographiques
+  MPI.
+
+  Pour notre algorithme, il est très simple à comprendre car nous
+  n'abordons pas les subtilités bas niveaux.
+
+* Experience
+
+
