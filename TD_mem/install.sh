@@ -1,16 +1,16 @@
 #!/bin/bash
 
 # Clean
-rm -rf compiler lib system system/cpu system/caches system/memory
+rm -rf compiler lib system system/cpu system/caches system/memory system/numa system/topology
 
 # Creating ditectories
-mkdir compiler lib system system/cpu system/caches system/memory
+mkdir compiler lib system system/cpu system/caches system/memory system/numa system/topology
 
 # Populating the compiler directory
-gcc --version > compiler/gcc_version
+gcc --version > compiler/gcc_version.txt
 
 # Populating the lib directory
-ldd --version > lib/glibc_version
+ldd --version > lib/glibc_version.txt
 
 # system
 # Gathering all hardware information
@@ -23,4 +23,10 @@ cat /proc/cpuinfo > system/cpu/info.txt
 cat /sys/devices/system/cpu/cpu*/cache/index*/* > system/caches/all.txt
 
 # Populating the memory directory
-sudo cat /proc/meminfo > system/memory/info.txt
+cat /proc/meminfo > system/memory/info.txt
+
+# Populating the numa directory
+numactl -H > system/numa/info.txt
+
+# Populating the topology directory
+lstopo --of png system/topology/lstopo.png
