@@ -25,10 +25,14 @@ int main(int argc, char **argv)
   //Run SSE
   run_t *run_SSE = create_run(2, s, r, ALIGN_SSE, dotprod_SSE_ops, dotprod_SSE_fctnames, dotprod_SSE_fctptrs, 33);
   do_run(run_SSE);
+
+#ifdef AVX
   
   //Run AVX
   run_t *run_AVX = create_run(2, s, r, ALIGN_AVX, dotprod_AVX_ops, dotprod_AVX_fctnames, dotprod_AVX_fctptrs, 33);
   do_run(run_AVX);
+
+#endif
 
 #ifdef AVX512
 
