@@ -33,7 +33,7 @@
    This benchmark performs memory stores in order to zero up a memory array using *non-temporal* stores.
    *Non-temporal* stores are special memory instructions that bypass the CPU caches and write directly into *DRAM*. 
 
-** copy   
+** copy
    
    This benchmark copies a memory array into another memory array.
 
@@ -199,7 +199,7 @@ void triad(double *restrict a, double *restrict b, double *restrict c, u64 n)
 
   The following sections cover the main constraints as well as how to ensure that they are satisfied.
   
-** Power 
+** Power
 
    If you are running the benchmarks on a laptop, make sure the device is connected to the power wall socket and _not running on battery_.
    Laptops come with power control units that can affect the overall performance of the target system in order to save power (Watts) and increase battery life.   
@@ -315,7 +315,7 @@ void triad(double *restrict a, double *restrict b, double *restrict c, u64 n)
 
      _WARNING_: *DO NOT USE ANY OTHER GOVERNOR OTHER THAN userspace*.
 
-** Background services and system noise    
+** Background services and system noise
    
    In order to lower the amount of system noise, you must make sure that no background processes, or fewer, are running while the benchmarks are being measured.
    If a process is mapped to the same core as the benchmark, the operating system process scheduler will migrate the benchmark process into another core. This
