@@ -12,7 +12,7 @@ max_range=230
 
 if [ ! -d "$cpu_arch" ] ; then
     echo "Your given cpu architecture have not data to plot"
-    echo "Please make sure you have run exec.sh with the same cpu architecture"
+    echo "Please make sure you have run run.sh script with the same cpu architecture"
     exit 2
 fi
 

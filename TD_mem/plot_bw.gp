@@ -1,5 +1,6 @@
 filename=ARG1
 max_range=ARG2
+cpu_name="Intel Pentium 2117U"
 
 set term png size 1900,1000 noenhanced font "Terminal,10"
 
@@ -9,7 +10,7 @@ set auto x
 
 set key left top
 
-set title "Intel Pentium bandwidth (in GiB/s) for a Load benchmark on a single array"
+set title cpu_name." bandwidth (in GiB/s) for a Load benchmark on a single array"
 
 set xlabel "Benchmark variants"
 set ylabel "Bandwidth in Bytes Per Cycle (higher is better)"
@@ -25,15 +26,15 @@ set multiplot layout 2, 2 rowsfirst
 set yrange [0:150]
 
 set title "L1 cache"
-plot filename."_L1.dat" u 2:xtic(1) t "Intel Pentium"
+plot filename."_L1.dat" u 2:xtic(1) t cpu_name
 
 set title "L2 cache"
-plot filename."_L2.dat" u 2:xtic(1) t "Intel Pentium"
+plot filename."_L2.dat" u 2:xtic(1) t cpu_name
 
 set title "L3 cache"
-plot filename."_L3.dat" u 2:xtic(1) t "Intel Pentium"
+plot filename."_L3.dat" u 2:xtic(1) t cpu_name
 
 set title "DRAM"
-plot filename."_DRAM.dat" u 2:xtic(1) t "Intel Pentium"
+plot filename."_DRAM.dat" u 2:xtic(1) t cpu_name
 
 unset multiplot
