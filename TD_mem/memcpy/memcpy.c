@@ -121,7 +121,7 @@ int main(int argc, char **argv)
   void *restrict b = aligned_alloc(ALIGN, n * sizeof(double));
 
   //
-  fprintf(stderr, "pc; %.4lf KiB, %.4lf MiB, %.4lf GiB; %llu 64-bit elements/iterations\n",
+  fprintf(stderr, "memcpy; %.4lf KiB, %.4lf MiB, %.4lf GiB; %llu 64-bit elements/iterations\n",
 	  s_kib,
 	  s_mib,
 	  s_gib,
