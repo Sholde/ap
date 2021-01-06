@@ -1,0 +1,70 @@
+#+title: Sequetial Vector Benchmark
+#+author: Sholde
+#+date: 2021
+
+* Script
+** Installation
+
+   The =install.sh= scritp provide all information about the system.
+
+   Compiler information are on =compiler/= directory.
+   See =compiler/gcc_version.txt=.
+
+   *glibc* information are on =lib/= directory.
+   See =lib/glibc_version.txt=.
+
+   *cpu*, *caches* and *memory* information are on =system/=
+   directory.
+   - dmidecode: =system/hw.txt=
+   - cpu: =system/cpu/info.txt=
+   - caches: =system/caches/all.txt=
+   - memory: =system/memory/info.txt=
+   - numa: =system/numa/info.txt=
+   - lstopo: =system/topo/lstopo.png=
+
+** Compilation
+   
+   The =compile.sh= compile all programs.
+   Executables are in their source directory.
+
+** Execution
+   
+   The =run.sh= execute all programs and store their output on file.
+
+   It take *exactly* 6 arguments in entry:
+   1. cpu architecture (to create a folder and store data)
+   2. core id (taskset on the program on this core)
+   3. size to fit in L1 cache
+   4. size to fit in L2 cache
+   5. size to fit in L3 cache
+   6. size to fit in DRAM
+
+*** More details about the script
+
+    After checking arguments, run all programs by number of array
+    they use. Here we are at most *2 arrays*. Therefore the script
+    run programs which use *1 array*, then programs use *2 arrays*.
+
+    Store all output in the directory: =cpu_architecture/benchmark=.
+    _For example:_ if we specify *knl* cpu architecture, the *reduc*
+    benchmark output will be on =knl/reduc= directory.
+
+    *IMPORTANT NOTE:* It store *BRUT* output in *.txt* files and plot
+    data in *.dat* files.
+
+    We can easily see the standart derivation and others information
+    of all benchmark by *cat* the file.
+
+** Plotting
+
+   Plotting step are separate in 2 files:
+   - a bash file
+   - a gnuplot file
+
+** Clean
+
+   Clean the follow list of file :
+   - temporary file (*~)
+   - executable file
+
+* Benchmark
