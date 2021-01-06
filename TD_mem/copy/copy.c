@@ -26,7 +26,7 @@ int main(int argc, char **argv)
   run_t *run_SSE = create_run(2, s, r, ALIGN_SSE, copy_SSE_fctnames, copy_SSE_fctptrs, 33);
   do_run(run_SSE);
 
-#ifdef AVX
+#ifdef __AVX__
   
   //Run AVX
   run_t *run_AVX = create_run(2, s, r, ALIGN_AVX, copy_AVX_fctnames, copy_AVX_fctptrs, 33);
@@ -34,7 +34,7 @@ int main(int argc, char **argv)
 
 #endif
 
-#ifdef AVX512
+#ifdef __AVX512__
 
   //Run AVX
   run_t *run_AVX512 = create_run(2, s, r, ALIGN_AVX512, copy_AVX512_fctnames, copy_AVX512_fctptrs, 33);
