@@ -5,7 +5,13 @@
 * Script
 ** Installation
 
-   The =install.sh= scritp provide all information about the system.
+   The =install.sh= script provide all information about the system.
+
+   Take *1 argument*:
+   - cpu architecture, to create a directory for follow information.
+
+   In the following section, we supposed that we are on
+   =cpu_architecture/= directory.
 
    Compiler information are on =compiler/= directory.
    See =compiler/gcc_version.txt=.
@@ -45,12 +51,12 @@
     they use. Here we are at most *2 arrays*. Therefore the script
     run programs which use *1 array*, then programs use *2 arrays*.
 
-    Store all output in the directory: =cpu_architecture/benchmark=.
+    Store all output in the directory: =cpu_architecture/benchmark/=.
     _For example:_ if we specify *knl* cpu architecture, the *reduc*
-    benchmark output will be on =knl/reduc= directory.
+    benchmark output will be on =knl/benchmark/reduc/= directory.
 
-    *IMPORTANT NOTE:* It store *BRUT* output in *.txt* files and plot
-    data in *.dat* files.
+    *IMPORTANT NOTE:* It store *BRUT* output in *.txt* files and
+    plotting data in *.dat* files.
 
     We can easily see the standart derivation and others information
     of all benchmark by *cat* the file.
@@ -60,6 +66,32 @@
    Plotting step are separate in 2 files:
    - a bash file
    - a gnuplot file
+
+*** Bash file
+
+    Main plotting script.
+    
+    Take *3 arguments*:
+    1. cpu architecture
+    2. a delta (to avoid plotting with max y)
+    3. the name of cpu
+
+    Plotting into *png* file on the same directory of benchmark data.
+
+*** GNUplot file
+
+    Not supposed to be called, but you can. The bash script above call
+    this *gnuplot* script.
+
+    Take *3 arguments*:
+    1. cpu architecture
+    2. a delta (to avoid plotting with max y)
+    3. the name of cpu
+
+    Plotting into *png* file on the same directory of benchmark data.
+
+    Chech the max bandwidth of L1 cache and take it on max y range for
+    others caches and DRAM.
 
 ** Clean
 
