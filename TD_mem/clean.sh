@@ -1,11 +1,16 @@
 #!/bin/bash
 
+# Clean temporary files
 rm -Rf *~ **/*~
 
-directories="copy dotprod load memcpy ntstore pc reduc store"
+# Clean cpu architecture directory
+if [ $# -eq 1 ] ; then
+    rm -Rf $1
+fi
 
-for directory in $directories
-do
+# Clean benchmark directories
+directories="copy dotprod load memcpy ntstore pc reduc store"
+for directory in $directories ; do
     make -C $directory/ clean
 done
 
