@@ -1,6 +1,6 @@
 filename=ARG1
-max_range=ARG2
-cpu_name="Intel Pentium 2117U"
+delta=ARG2
+cpu_name=ARG3
 
 set term png size 1900,1000 noenhanced font "Terminal,10"
 
@@ -23,7 +23,8 @@ set xtic rotate by -45 scale 0
 
 set multiplot layout 2, 2 rowsfirst
 
-set yrange [0:150]
+stats filename."_L1.dat" using 2 name "st"
+set yrange [0:st_max + delta]
 
 set title "L1 cache"
 plot filename."_L1.dat" u 2:xtic(1) t cpu_name

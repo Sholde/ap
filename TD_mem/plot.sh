@@ -2,13 +2,14 @@
 
 # Check arguments
 
-if [ $# -ne 1 ] ; then
-    echo "Usage: $0 cpu_arch"
+if [ $# -ne 3 ] ; then
+    echo "Usage: $0 cpu_arch delta cpu_name"
     exit 1
 fi
 
 cpu_arch=$1
-max_range=230
+delta=$2
+cpu_name=$3
 
 if [ ! -d "$cpu_arch" ] ; then
     echo "Your given cpu architecture have not data to plot"
@@ -21,7 +22,7 @@ fi
 directories="copy dotprod load memcpy ntstore pc reduc store"
 for directory in $directories ; do
     dir_path=$cpu_arch/benchmark/$directory
-    gnuplot -c plot_bw.gp $dir_path/$directory $max_range > $dir_path/$directory"_bw.png"
+    gnuplot -c plot_bw.gp $dir_path/$directory $delta $cpu_name > $dir_path/$directory"_bw.png"
 done
 
 exit 0
