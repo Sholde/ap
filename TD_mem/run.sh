@@ -45,19 +45,19 @@ mkdir $cpu_arch/pc
 echo "TEST: pc"
 
 # L1 cache
-taskset -c $core_id ./pc/pc_SSE_AVX $(( $l1_size * 2**10 / 2 )) 1000 > $cpu_arch/"pc/pc_L1.txt"
+taskset -c $core_id ./pc/pc $(( $l1_size * 2**10 / 2 )) 1000 > $cpu_arch/"pc/pc_L1.txt"
 cat $cpu_arch/"pc/pc_L1.txt" | cut -d';' -f1,9 > $cpu_arch/"pc/pc_L1.dat"
 
 # L2 cache
-taskset -c $core_id ./pc/pc_SSE_AVX $(( $l2_size * 2**10 / 2 )) 1000 > $cpu_arch/"pc/pc_L2.txt"
+taskset -c $core_id ./pc/pc $(( $l2_size * 2**10 / 2 )) 1000 > $cpu_arch/"pc/pc_L2.txt"
 cat $cpu_arch/"pc/pc_L2.txt" | cut -d';' -f1,9 > $cpu_arch/"pc/pc_L2.dat"
 
 # L3 cache
-taskset -c $core_id ./pc/pc_SSE_AVX $(( $l3_size * 2**10 / 2 )) 1000 > $cpu_arch/"pc/pc_L3.txt"
+taskset -c $core_id ./pc/pc $(( $l3_size * 2**10 / 2 )) 1000 > $cpu_arch/"pc/pc_L3.txt"
 cat $cpu_arch/"pc/pc_L3.txt" | cut -d';' -f1,9 > $cpu_arch/"pc/pc_L3.dat"
 
 # DRAM
-taskset -c $core_id ./pc/pc_SSE_AVX $(( $ram_size * 2**10 / 2 )) 1000 > $cpu_arch/"pc/pc_DRAM.txt"
+taskset -c $core_id ./pc/pc $(( $ram_size * 2**10 / 2 )) 1000 > $cpu_arch/"pc/pc_DRAM.txt"
 cat $cpu_arch/"pc/pc_DRAM.txt" | cut -d';' -f1,9 > $cpu_arch/"pc/pc_DRAM.dat"
 
 # 2 arrays
@@ -88,18 +88,18 @@ mkdir $cpu_arch/memcpy
 echo "TEST: memcpy"
 
 # L1 cache
-taskset -c $core_id ./memcpy/memcpy_SSE_AVX $(( $l1_size * 2**10 / 2 )) 1000 > $cpu_arch/"memcpy/memcpy_L1.txt"
+taskset -c $core_id ./memcpy/memcpy $(( $l1_size * 2**10 / 2 )) 1000 > $cpu_arch/"memcpy/memcpy_L1.txt"
 cat $cpu_arch/"memcpy/memcpy_L1.txt" | cut -d';' -f1,9 > $cpu_arch/"memcpy/memcpy_L1.dat"
 
 # L2 cache
-taskset -c $core_id ./memcpy/memcpy_SSE_AVX $(( $l2_size * 2**10 / 2 )) 1000 > $cpu_arch/"memcpy/memcpy_L2.txt"
+taskset -c $core_id ./memcpy/memcpy $(( $l2_size * 2**10 / 2 )) 1000 > $cpu_arch/"memcpy/memcpy_L2.txt"
 cat $cpu_arch/"memcpy/memcpy_L2.txt" | cut -d';' -f1,9 > $cpu_arch/"memcpy/memcpy_L2.dat"
 
 # L3 cache
-taskset -c $core_id ./memcpy/memcpy_SSE_AVX $(( $l3_size * 2**10 / 2 )) 1000 > $cpu_arch/"memcpy/memcpy_L3.txt"
+taskset -c $core_id ./memcpy/memcpy $(( $l3_size * 2**10 / 2 )) 1000 > $cpu_arch/"memcpy/memcpy_L3.txt"
 cat $cpu_arch/"memcpy/memcpy_L3.txt" | cut -d';' -f1,9 > $cpu_arch/"memcpy/memcpy_L3.dat"
 
 # DRAM
-taskset -c $core_id ./memcpy/memcpy_SSE_AVX $(( $ram_size * 2**10 / 2 )) 1000 > $cpu_arch/"memcpy/memcpy_DRAM.txt"
+taskset -c $core_id ./memcpy/memcpy $(( $ram_size * 2**10 / 2 )) 1000 > $cpu_arch/"memcpy/memcpy_DRAM.txt"
 cat $cpu_arch/"memcpy/memcpy_DRAM.txt" | cut -d';' -f1,9 > $cpu_arch/"memcpy/memcpy_DRAM.dat"
 
