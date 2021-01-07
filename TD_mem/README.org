@@ -10,7 +10,7 @@
    Take *1 argument*:
    - cpu architecture, to create a directory for follow information.
 
-   In the following section, we supposed that we are on
+   In the following lines, we supposed that we are on
    =cpu_architecture/= directory.
 
    Compiler information are on =compiler/= directory.
