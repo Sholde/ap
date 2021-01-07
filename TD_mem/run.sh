@@ -14,9 +14,6 @@ l2_size=$4
 l3_size=$5
 ram_size=$6
 
-rm -Rf $cpu_arch
-mkdir $cpu_arch
-
 # 1 array
 
 directories="load ntstore reduc store"
