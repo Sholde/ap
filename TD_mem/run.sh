@@ -18,11 +18,11 @@ ram_size=$6
 
 directories="load ntstore reduc store"
 for directory in $directories ; do
-    mkdir $cpu_arch/$directory
+
     echo "TEST: $directory"
 
     binary=./$directory/$directory"_SSE_AVX"
-    result_path=$cpu_arch/$directory
+    result_path=$cpu_arch/benchmark/$directory
     
     # L1 cache
     taskset -c $core_id $binary $(( $l1_size * 2**10 )) 1000 > $result_path/$directory"_L1.txt"
@@ -41,36 +41,36 @@ for directory in $directories ; do
     cat $result_path/$directory"_DRAM.txt" | cut -d';' -f1,9 | sed "s/;//g" > $result_path/$directory"_DRAM.dat"
 done
 
-mkdir $cpu_arch/pc
 echo "TEST: pc"
 
 binary=./pc/pc
+result_path=$cpu_arch/benchmark/pc
 
 # L1 cache
-taskset -c $core_id $binary $(( $l1_size * 2**10 / 2 )) 1000 > $cpu_arch/"pc/pc_L1.txt"
-cat $cpu_arch/"pc/pc_L1.txt" | cut -d',' -f1,4 | sed -n "2,34p" | sed "s/,//g"  > $cpu_arch/"pc/pc_L1.dat"
+taskset -c $core_id $binary $(( $l1_size * 2**10 / 2 )) 1000 > $result_path/pc_L1.txt
+cat $result_path/pc_L1.txt | cut -d',' -f1,4 | sed -n "2,34p" | sed "s/,//g"  > $result_path/pc_L1.dat
 
 # L2 cache
-taskset -c $core_id $binary $(( $l2_size * 2**10 / 2 )) 1000 > $cpu_arch/"pc/pc_L2.txt"
-cat $cpu_arch/"pc/pc_L2.txt" | cut -d',' -f1,4 | sed -n "2,34p" | sed "s/,//g"  > $cpu_arch/"pc/pc_L2.dat"
+taskset -c $core_id $binary $(( $l2_size * 2**10 / 2 )) 1000 > $result_path/pc_L2.txt
+cat $result_path/pc_L2.txt | cut -d',' -f1,4 | sed -n "2,34p" | sed "s/,//g"  > $result_path/pc_L2.dat
 
 # L3 cache
-taskset -c $core_id $binary $(( $l3_size * 2**10 / 2 )) 1000 > $cpu_arch/"pc/pc_L3.txt"
-cat $cpu_arch/"pc/pc_L3.txt" | cut -d',' -f1,4 | sed -n "2,34p" | sed "s/,//g"  > $cpu_arch/"pc/pc_L3.dat"
+taskset -c $core_id $binary $(( $l3_size * 2**10 / 2 )) 1000 > $result_path/pc_L3.txt
+cat $result_path/pc_L3.txt | cut -d',' -f1,4 | sed -n "2,34p" | sed "s/,//g"  > $result_path/pc_L3.dat
 
 # DRAM
-taskset -c $core_id $binary $(( $ram_size * 2**10 / 2 )) 1000 > $cpu_arch/"pc/pc_DRAM.txt"
-cat $cpu_arch/"pc/pc_DRAM.txt" | cut -d',' -f1,4 | sed -n "2,34p" | sed "s/,//g"  > $cpu_arch/"pc/pc_DRAM.dat"
+taskset -c $core_id $binary $(( $ram_size * 2**10 / 2 )) 1000 > $result_path/pc_DRAM.txt
+cat $result_path/pc_DRAM.txt | cut -d',' -f1,4 | sed -n "2,34p" | sed "s/,//g"  > $result_path/pc_DRAM.dat
 
 # 2 arrays
 
 directories="copy dotprod"
 for directory in $directories ; do
-    mkdir $cpu_arch/$directory
+
     echo "TEST: $directory"
 
     binary=./$directory/$directory"_SSE_AVX"
-    result_path=$cpu_arch/$directory
+    result_path=$cpu_arch/benchmark/$directory
 
     # L1 cache
     taskset -c $core_id $binary $(( $l1_size * 2**10 / 2 )) 1000 > $result_path/$directory"_L1.txt"
@@ -89,24 +89,24 @@ for directory in $directories ; do
     cat $result_path/$directory"_DRAM.txt" | cut -d';' -f1,9 | sed "s/;//g" > $result_path/$directory"_DRAM.dat"
 done
 
-mkdir $cpu_arch/memcpy
 echo "TEST: memcpy"
 
 binary=./memcpy/memcpy
+result_path=$cpu_arch/benchmark/memcpy
 
 # L1 cache
-taskset -c $core_id $binary $(( $l1_size * 2**10 / 2 )) 1000 > $cpu_arch/"memcpy/memcpy_L1.txt"
-cat $cpu_arch/"memcpy/memcpy_L1.txt" | cut -d',' -f1,4 | sed -n "2,34p" | sed "s/,//g"  > $cpu_arch/"memcpy/memcpy_L1.dat"
+taskset -c $core_id $binary $(( $l1_size * 2**10 / 2 )) 1000 > $result_path/memcpy_L1.txt
+cat $result_path/memcpy_L1.txt | cut -d',' -f1,4 | sed -n "2,34p" | sed "s/,//g"  > $result_path/memcpy_L1.dat
 
 # L2 cache
-taskset -c $core_id $binary $(( $l2_size * 2**10 / 2 )) 1000 > $cpu_arch/"memcpy/memcpy_L2.txt"
-cat $cpu_arch/"memcpy/memcpy_L2.txt" | cut -d',' -f1,4 | sed -n "2,34p" | sed "s/,//g"  > $cpu_arch/"memcpy/memcpy_L2.dat"
+taskset -c $core_id $binary $(( $l2_size * 2**10 / 2 )) 1000 > $result_path/memcpy_L2.txt
+cat $result_path/memcpy_L2.txt | cut -d',' -f1,4 | sed -n "2,34p" | sed "s/,//g"  > $result_path/memcpy_L2.dat
 
 # L3 cache
-taskset -c $core_id $binary $(( $l3_size * 2**10 / 2 )) 1000 > $cpu_arch/"memcpy/memcpy_L3.txt"
-cat $cpu_arch/"memcpy/memcpy_L3.txt" | cut -d',' -f1,4 | sed -n "2,34p" | sed "s/,//g"  > $cpu_arch/"memcpy/memcpy_L3.dat"
+taskset -c $core_id $binary $(( $l3_size * 2**10 / 2 )) 1000 > $result_path/memcpy_L3.txt
+cat $result_path/memcpy_L3.txt | cut -d',' -f1,4 | sed -n "2,34p" | sed "s/,//g"  > $result_path/memcpy_L3.dat
 
 # DRAM
-taskset -c $core_id $binary $(( $ram_size * 2**10 / 2 )) 1000 > $cpu_arch/"memcpy/memcpy_DRAM.txt"
-cat $cpu_arch/"memcpy/memcpy_DRAM.txt" | cut -d',' -f1,4 | sed -n "2,34p" | sed "s/,//g"  > $cpu_arch/"memcpy/memcpy_DRAM.dat"
+taskset -c $core_id $binary $(( $ram_size * 2**10 / 2 )) 1000 > $result_path/memcpy_DRAM.txt
+cat $result_path/memcpy_DRAM.txt | cut -d',' -f1,4 | sed -n "2,34p" | sed "s/,//g"  > $result_path/memcpy_DRAM.dat
 

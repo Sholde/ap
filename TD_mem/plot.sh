@@ -12,7 +12,7 @@ max_range=230
 
 if [ ! -d "$cpu_arch" ] ; then
     echo "Your given cpu architecture have not data to plot"
-    echo "Please make sure you have run run.sh script with the same cpu architecture"
+    echo "Please make sure you have run install.sh and run.sh script with the same cpu architecture"
     exit 2
 fi
 
@@ -20,7 +20,8 @@ fi
 
 directories="copy dotprod load memcpy ntstore pc reduc store"
 for directory in $directories ; do
-    gnuplot -c plot_bw.gp $cpu_arch/$directory/$directory $max_range > $cpu_arch/$directory/$directory"_bw.png"
+    dir_path=$cpu_arch/benchmark/$directory
+    gnuplot -c plot_bw.gp $dir_path/$directory $max_range > $dir_path/$directory"_bw.png"
 done
 
 exit 0

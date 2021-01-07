@@ -16,7 +16,14 @@ rm -rf $cpu_arch
 mkdir $cpu_arch \
       $cpu_arch/compiler $cpu_arch/lib \
       $cpu_arch/system $cpu_arch/system/cpu $cpu_arch/system/caches $cpu_arch/system/memory \
-      $cpu_arch/system/numa $cpu_arch/system/topology 
+      $cpu_arch/system/numa $cpu_arch/system/topology
+
+benchmark="copy dotprod load memcpy ntstore pc reduc store"
+bench_dir=$cpu_arch/benchmark
+mkdir $bench_dir
+for bench in $benchmark ; do
+    mkdir $bench_dir/$bench
+done	     
 
 # Populating the compiler directory
 gcc --version > $cpu_arch/compiler/gcc_version.txt
