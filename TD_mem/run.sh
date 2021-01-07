@@ -26,19 +26,19 @@ for directory in $directories ; do
 
     # L1 cache
     taskset -c $core_id ./$directory/$directory"_SSE_AVX" $(( $l1_size * 2**10 )) 1000 > $cpu_arch/$directory/$directory"_L1.txt"
-    cat $cpu_arch/$directory/$directory"_L1.txt" | cut -d';' -f1,9 > $cpu_arch/$directory/$directory"_L1.dat"
+    cat $cpu_arch/$directory/$directory"_L1.txt" | cut -d';' -f1,9 | sed "s/;//g" > $cpu_arch/$directory/$directory"_L1.dat"
 
     # L2 cache
     taskset -c $core_id ./$directory/$directory"_SSE_AVX" $(( $l2_size * 2**10 )) 1000 > $cpu_arch/$directory/$directory"_L2.txt"
-    cat $cpu_arch/$directory/$directory"_L2.txt" | cut -d';' -f1,9 > $cpu_arch/$directory/$directory"_L2.dat"
+    cat $cpu_arch/$directory/$directory"_L2.txt" | cut -d';' -f1,9 | sed "s/;//g" > $cpu_arch/$directory/$directory"_L2.dat"
 
     # L3 cache
     taskset -c $core_id ./$directory/$directory"_SSE_AVX" $(( $l3_size * 2**10 )) 1000 > $cpu_arch/$directory/$directory"_L3.txt"
-    cat $cpu_arch/$directory/$directory"_L3.txt" | cut -d';' -f1,9 > $cpu_arch/$directory/$directory"_L3.dat"
+    cat $cpu_arch/$directory/$directory"_L3.txt" | cut -d';' -f1,9 | sed "s/;//g" > $cpu_arch/$directory/$directory"_L3.dat"
 
     # DRAM
     taskset -c $core_id ./$directory/$directory"_SSE_AVX" $(( $ram_size * 2**10 )) 1000 > $cpu_arch/$directory/$directory"_DRAM.txt"
-    cat $cpu_arch/$directory/$directory"_DRAM.txt" | cut -d';' -f1,9 > $cpu_arch/$directory/$directory"_DRAM.dat"
+    cat $cpu_arch/$directory/$directory"_DRAM.txt" | cut -d';' -f1,9 | sed "s/;//g" > $cpu_arch/$directory/$directory"_DRAM.dat"
 done
 
 mkdir $cpu_arch/pc
@@ -46,19 +46,19 @@ echo "TEST: pc"
 
 # L1 cache
 taskset -c $core_id ./pc/pc $(( $l1_size * 2**10 / 2 )) 1000 > $cpu_arch/"pc/pc_L1.txt"
-cat $cpu_arch/"pc/pc_L1.txt" | cut -d';' -f1,9 > $cpu_arch/"pc/pc_L1.dat"
+cat $cpu_arch/"pc/pc_L1.txt" | cut -d',' -f1,4 | sed -n "2,34p" | sed "s/,//g"  > $cpu_arch/"pc/pc_L1.dat"
 
 # L2 cache
 taskset -c $core_id ./pc/pc $(( $l2_size * 2**10 / 2 )) 1000 > $cpu_arch/"pc/pc_L2.txt"
-cat $cpu_arch/"pc/pc_L2.txt" | cut -d';' -f1,9 > $cpu_arch/"pc/pc_L2.dat"
+cat $cpu_arch/"pc/pc_L2.txt" | cut -d',' -f1,4 | sed -n "2,34p" | sed "s/,//g"  > $cpu_arch/"pc/pc_L2.dat"
 
 # L3 cache
 taskset -c $core_id ./pc/pc $(( $l3_size * 2**10 / 2 )) 1000 > $cpu_arch/"pc/pc_L3.txt"
-cat $cpu_arch/"pc/pc_L3.txt" | cut -d';' -f1,9 > $cpu_arch/"pc/pc_L3.dat"
+cat $cpu_arch/"pc/pc_L3.txt" | cut -d',' -f1,4 | sed -n "2,34p" | sed "s/,//g"  > $cpu_arch/"pc/pc_L3.dat"
 
 # DRAM
 taskset -c $core_id ./pc/pc $(( $ram_size * 2**10 / 2 )) 1000 > $cpu_arch/"pc/pc_DRAM.txt"
-cat $cpu_arch/"pc/pc_DRAM.txt" | cut -d';' -f1,9 > $cpu_arch/"pc/pc_DRAM.dat"
+cat $cpu_arch/"pc/pc_DRAM.txt" | cut -d',' -f1,4 | sed -n "2,34p" | sed "s/,//g"  > $cpu_arch/"pc/pc_DRAM.dat"
 
 # 2 arrays
 
@@ -69,19 +69,19 @@ for directory in $directories ; do
 
     # L1 cache
     taskset -c $core_id ./$directory/$directory"_SSE_AVX" $(( $l1_size * 2**10 / 2 )) 1000 > $cpu_arch/$directory/$directory"_L1.txt"
-    cat $cpu_arch/$directory/$directory"_L1.txt" | cut -d';' -f1,9 > $cpu_arch/$directory/$directory"_L1.dat"
+    cat $cpu_arch/$directory/$directory"_L1.txt" | cut -d';' -f1,9 | sed "s/;//g" > $cpu_arch/$directory/$directory"_L1.dat"
 
     # L2 cache
     taskset -c $core_id ./$directory/$directory"_SSE_AVX" $(( $l2_size * 2**10 / 2 )) 1000 > $cpu_arch/$directory/$directory"_L2.txt"
-    cat $cpu_arch/$directory/$directory"_L2.txt" | cut -d';' -f1,9 > $cpu_arch/$directory/$directory"_L2.dat"
+    cat $cpu_arch/$directory/$directory"_L2.txt" | cut -d';' -f1,9 | sed "s/;//g" > $cpu_arch/$directory/$directory"_L2.dat"
 
     # L3 cache
     taskset -c $core_id ./$directory/$directory"_SSE_AVX" $(( $l3_size * 2**10 / 2 )) 1000 > $cpu_arch/$directory/$directory"_L3.txt"
-    cat $cpu_arch/$directory/$directory"_L3.txt" | cut -d';' -f1,9 > $cpu_arch/$directory/$directory"_L3.dat"
+    cat $cpu_arch/$directory/$directory"_L3.txt" | cut -d';' -f1,9 | sed "s/;//g" > $cpu_arch/$directory/$directory"_L3.dat"
 
     # DRAM
     taskset -c $core_id ./$directory/$directory"_SSE_AVX" $(( $ram_size * 2**10 / 2 )) 1000 > $cpu_arch/$directory/$directory"_DRAM.txt"
-    cat $cpu_arch/$directory/$directory"_DRAM.txt" | cut -d';' -f1,9 > $cpu_arch/$directory/$directory"_DRAM.dat"
+    cat $cpu_arch/$directory/$directory"_DRAM.txt" | cut -d';' -f1,9 | sed "s/;//g" > $cpu_arch/$directory/$directory"_DRAM.dat"
 done
 
 mkdir $cpu_arch/memcpy
@@ -89,17 +89,17 @@ echo "TEST: memcpy"
 
 # L1 cache
 taskset -c $core_id ./memcpy/memcpy $(( $l1_size * 2**10 / 2 )) 1000 > $cpu_arch/"memcpy/memcpy_L1.txt"
-cat $cpu_arch/"memcpy/memcpy_L1.txt" | cut -d';' -f1,9 > $cpu_arch/"memcpy/memcpy_L1.dat"
+cat $cpu_arch/"memcpy/memcpy_L1.txt" | cut -d',' -f1,4 | sed -n "2,34p" | sed "s/,//g"  > $cpu_arch/"memcpy/memcpy_L1.dat"
 
 # L2 cache
 taskset -c $core_id ./memcpy/memcpy $(( $l2_size * 2**10 / 2 )) 1000 > $cpu_arch/"memcpy/memcpy_L2.txt"
-cat $cpu_arch/"memcpy/memcpy_L2.txt" | cut -d';' -f1,9 > $cpu_arch/"memcpy/memcpy_L2.dat"
+cat $cpu_arch/"memcpy/memcpy_L2.txt" | cut -d',' -f1,4 | sed -n "2,34p" | sed "s/,//g"  > $cpu_arch/"memcpy/memcpy_L2.dat"
 
 # L3 cache
 taskset -c $core_id ./memcpy/memcpy $(( $l3_size * 2**10 / 2 )) 1000 > $cpu_arch/"memcpy/memcpy_L3.txt"
-cat $cpu_arch/"memcpy/memcpy_L3.txt" | cut -d';' -f1,9 > $cpu_arch/"memcpy/memcpy_L3.dat"
+cat $cpu_arch/"memcpy/memcpy_L3.txt" | cut -d',' -f1,4 | sed -n "2,34p" | sed "s/,//g"  > $cpu_arch/"memcpy/memcpy_L3.dat"
 
 # DRAM
 taskset -c $core_id ./memcpy/memcpy $(( $ram_size * 2**10 / 2 )) 1000 > $cpu_arch/"memcpy/memcpy_DRAM.txt"
-cat $cpu_arch/"memcpy/memcpy_DRAM.txt" | cut -d';' -f1,9 > $cpu_arch/"memcpy/memcpy_DRAM.dat"
+cat $cpu_arch/"memcpy/memcpy_DRAM.txt" | cut -d',' -f1,4 | sed -n "2,34p" | sed "s/,//g"  > $cpu_arch/"memcpy/memcpy_DRAM.dat"
 
