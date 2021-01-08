@@ -72,9 +72,10 @@
     Main plotting script.
     
     Take *3 arguments*:
-    1. cpu architecture
-    2. a delta (to avoid plotting with max y)
+    1. a delta (to avoid plotting with max y)
+    2. cpu architecture (without spaces)
     3. the name of cpu
+
 
     Plotting into *png* file on the same directory of benchmark data.
 
@@ -83,12 +84,13 @@
     Not supposed to be called, but you can. The bash script above call
     this *gnuplot* script.
 
-    Take *3 arguments*:
-    1. cpu architecture
-    2. a delta (to avoid plotting with max y)
-    3. the name of cpu
+    _WARNING_: it return a *pdf* file on output.
 
-    Plotting into *png* file on the same directory of benchmark data.
+    Take *3 arguments*:
+    1. a delta (to avoid plotting with max y)
+    2. path of data file + name of benchmark (i.e: knl/benchmark/reduc/reduc)
+    3. the name of benchmark (without spaces)
+    4. the name of cpu
 
     Chech the max bandwidth of L1 cache and take it on max y range for
     others caches and DRAM.

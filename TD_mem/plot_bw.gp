@@ -1,6 +1,7 @@
-filename=ARG1
-delta=ARG2
-cpu_name=ARG3
+delta=ARG1
+filename=ARG2
+bench_name=ARG3
+cpu_name=ARG4
 
 set term png size 1900,1000 noenhanced font "Terminal,10"
 
@@ -10,10 +11,10 @@ set auto x
 
 set key left top
 
-set title cpu_name." bandwidth (in GiB/s) for a Load benchmark on a single array"
+set title cpu_name." bandwidth (in GiB/s) for a ".bench_name." benchmark on a single array"
 
 set xlabel "Benchmark variants"
-set ylabel "Bandwidth in Bytes Per Cycle (higher is better)"
+set ylabel "Bandwidth in Bytes Per Second (higher is better)"
 
 set style data histogram
 set style fill solid border -1
