@@ -336,6 +336,10 @@ $ ./plot.sh 10 ivy_bridge "Intel Pentium 2117U"
     All memory space are relatively the same. That is good. In average
     9 GiB/s.
 
+    I know that standart derivation of *reduc_SSE_16B* is average 10%
+    and it is not an evaluble performance but I run 20 times the
+    bencmark and it was each time at 10%.
+
 *** pc
 
     #+CAPTION: Pointer chasing benchmark on an Intel Pentium 2117U
