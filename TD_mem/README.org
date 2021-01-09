@@ -50,6 +50,7 @@
     After checking arguments, run all programs by number of array
     they use. Here we are at most *2 arrays*. Therefore the script
     run programs which use *1 array*, then programs use *2 arrays*.
+    Run all benchmark with 1,000 iteration for more accuracy.
 
     Store all output in the directory: =cpu_architecture/benchmark/=.
     _For example:_ if we specify *knl* cpu architecture, the *reduc*
@@ -103,12 +104,53 @@
 
 * Benchmark
 ** Coffee Lake
+*** Information
+
+    #+CAPTION: Topology of Intel Core i5-8400
+    #+NAME: fig:topology_INTEL_CORE_I5-8400
+    #+ATTR_HTML: :width 1500px
+    [[./coffee_lake/system/topology/lstopo.png]]
+
+    Caches size:
+    - L1: 32K
+    - L2: 256K
+    - L3: 9216K
+    - DRAM: 8G
+
+    I decide to run benchmarks with :
+    - L1: 24K
+    - L2: 200K
+    - L3: 5000K
+    - DRAM: 15000K
+
+    This size are chosen because they fit on their caches/ram.
+
+    The governor was set to *performance*, because *userspace* wasn't
+    available.
+    And the frequency was set to *4.00GHz*. (the maximum)
+
+**** Command
+
+#+begin_src bash
+$ ./install.sh coffee_lake
+$ ./compile.sh
+$ sudo cpupower -c 5 frequency-set --governor performance -f 4.00GHz
+$ ./run.sh coffee_lake 5 24 200 5000 15000
+$ ./plot.sh 10 coffee_lake "Intel Core i5-8400"
+#+end_src
+
 *** copy
 
     #+CAPTION: Copy benchmark on an Intel Core i5-8400
     #+NAME: fig:load_INTEL_CORE_I5-8400
     #+ATTR_HTML: :width 1500px
     [[./coffee_lake/benchmark/copy/copy_bw.png]]
+
+    We can see a difference of bandwith for *sse* and *avx* for L1
+    cache, where *avx* is better but for other memory space there are
+    not difference.
+
+    Also, all *sse* size is the same.
 
 *** dotprod
 
@@ -117,12 +159,22 @@
     #+ATTR_HTML: :width 1500px
     [[./coffee_lake/benchmark/dotprod/dotprod_bw.png]]
 
+    For *L1* cache we can see an evolution between all size. *AVX*
+    stay better.
+
+    For *L2* cache, *avx* is a little bit better than *sse*.
+
+    Other memory space have not significant.
+
 *** load
 
     #+CAPTION: Load benchmark on an Intel Core i5-8400
     #+NAME: fig:load_INTEL_CORE_I5-8400
     #+ATTR_HTML: :width 1500px
     [[./coffee_lake/benchmark/load/load_bw.png]]
+
+    We can see a difference between all size for all cache. *avx*
+    still better.
 
 *** memcpy
 
@@ -131,12 +183,26 @@
     #+ATTR_HTML: :width 1500px
     [[./coffee_lake/benchmark/memcpy/memcpy_bw.png]]
 
+    For *L1* cache, the bandwith is not really stable.
+
+    But for other memory space it is.
+
+    We can however raise that we have this list of memory space
+    speed :
+    1. L1 cache
+    2. L2 cache
+    3. L3 cache
+    4. DRAM
+
 *** ntstore
 
     #+CAPTION: Non temporal store benchmark on an Intel Core i5-8400
     #+NAME: fig:load_INTEL_CORE_I5-8400
     #+ATTR_HTML: :width 1500px
     [[./coffee_lake/benchmark/ntstore/ntstore_bw.png]]
+
+    All memory space are relatively the same. In average 35
+    BiB/s. That is good.
 
 *** pc
 
@@ -145,6 +211,11 @@
     #+ATTR_HTML: :width 1500px
     [[./coffee_lake/benchmark/pc/pc_bw.png]]
 
+    For all cache the bandwith was the same. I mean that they are
+    relatively near in bandwith in general.
+
+    But I don't undestand the DRAM bandwith.
+
 *** reduc
 
     #+CAPTION: Reduction benchmark on an Intel Core i5-8400
@@ -152,11 +223,19 @@
     #+ATTR_HTML: :width 1500px
     [[./coffee_lake/benchmark/reduc/reduc_bw.png]]
 
+    We have better badnwith for *avx* with all cache.
+
+    For *DRAM* we have a problem that I don't understand.
+
 *** store
 
     #+CAPTION: Store benchmark on an Intel Core i5-8400
     #+NAME: fig:load_INTEL_CORE_I5-8400
     #+ATTR_HTML: :width 1500px
     [[./coffee_lake/benchmark/store/store_bw.png]]
+
+    We double on bandwith for L1 cache between *sse* and *avx*.
+
+    For other memory space, that is relatively the same between both.
 
 ** Ivy Bridge
