@@ -102,59 +102,61 @@
    - executable file
 
 * Benchmark
-** copy
+** Coffee Lake
+*** copy
 
-   #+CAPTION: Copy benchmark on an Intel Pentium 2117U
-   #+NAME: fig:load_INTEL_PENTIUM_2117U
-   #+ATTR_HTML: :width 1500px
-   [[./ivy_bridge/benchmark/copy/copy_bw.png]]
+    #+CAPTION: Copy benchmark on an Intel Core i5-8400
+    #+NAME: fig:load_INTEL_CORE_I5-8400
+    #+ATTR_HTML: :width 1500px
+    [[./coffee_lake/benchmark/copy/copy_bw.png]]
 
-** dotprod
+*** dotprod
 
-   #+CAPTION: Dotprod benchmark on an Intel Pentium 2117U
-   #+NAME: fig:load_INTEL_PENTIUM_2117U
-   #+ATTR_HTML: :width 1500px
-   [[./ivy_bridge/benchmark/dotprod/dotprod_bw.png]]
+    #+CAPTION: Dotprod benchmark on an Intel Core i5-8400
+    #+NAME: fig:load_INTEL_CORE_I5-8400
+    #+ATTR_HTML: :width 1500px
+    [[./coffee_lake/benchmark/dotprod/dotprod_bw.png]]
 
-** load
+*** load
 
-   #+CAPTION: Load benchmark on an Intel Pentium 2117U
-   #+NAME: fig:load_INTEL_PENTIUM_2117U
-   #+ATTR_HTML: :width 1500px
-   [[./ivy_bridge/benchmark/load/load_bw.png]]
+    #+CAPTION: Load benchmark on an Intel Core i5-8400
+    #+NAME: fig:load_INTEL_CORE_I5-8400
+    #+ATTR_HTML: :width 1500px
+    [[./coffee_lake/benchmark/load/load_bw.png]]
 
-** memcpy
+*** memcpy
 
-   #+CAPTION: Memcpy benchmark on an Intel Pentium 2117U
-   #+NAME: fig:load_INTEL_PENTIUM_2117U
-   #+ATTR_HTML: :width 1500px
-   [[./ivy_bridge/benchmark/memcpy/memcpy_bw.png]]
+    #+CAPTION: Memcpy benchmark on an Intel Core i5-8400
+    #+NAME: fig:load_INTEL_CORE_I5-8400
+    #+ATTR_HTML: :width 1500px
+    [[./coffee_lake/benchmark/memcpy/memcpy_bw.png]]
 
-** ntstore
+*** ntstore
 
-   #+CAPTION: Non temporal store benchmark on an Intel Pentium 2117U
-   #+NAME: fig:load_INTEL_PENTIUM_2117U
-   #+ATTR_HTML: :width 1500px
-   [[./ivy_bridge/benchmark/ntstore/ntstore_bw.png]]
+    #+CAPTION: Non temporal store benchmark on an Intel Core i5-8400
+    #+NAME: fig:load_INTEL_CORE_I5-8400
+    #+ATTR_HTML: :width 1500px
+    [[./coffee_lake/benchmark/ntstore/ntstore_bw.png]]
 
-** pc
+*** pc
 
-   #+CAPTION: Pointer chasing benchmark on an Intel Pentium 2117U
-   #+NAME: fig:load_INTEL_PENTIUM_2117U
-   #+ATTR_HTML: :width 1500px
-   [[./ivy_bridge/benchmark/pc/pc_bw.png]]
+    #+CAPTION: Pointer chasing benchmark on an Intel Core i5-8400
+    #+NAME: fig:load_INTEL_CORE_I5-8400
+    #+ATTR_HTML: :width 1500px
+    [[./coffee_lake/benchmark/pc/pc_bw.png]]
 
-** reduc
+*** reduc
 
-   #+CAPTION: Reduction benchmark on an Intel Pentium 2117U
-   #+NAME: fig:load_INTEL_PENTIUM_2117U
-   #+ATTR_HTML: :width 1500px
-   [[./ivy_bridge/benchmark/reduc/reduc_bw.png]]
+    #+CAPTION: Reduction benchmark on an Intel Core i5-8400
+    #+NAME: fig:load_INTEL_CORE_I5-8400
+    #+ATTR_HTML: :width 1500px
+    [[./coffee_lake/benchmark/reduc/reduc_bw.png]]
 
-** store
+*** store
 
-   #+CAPTION: Store benchmark on an Intel Pentium 2117U
-   #+NAME: fig:load_INTEL_PENTIUM_2117U
-   #+ATTR_HTML: :width 1500px
-   [[./ivy_bridge/benchmark/store/store_bw.png]]
+    #+CAPTION: Store benchmark on an Intel Core i5-8400
+    #+NAME: fig:load_INTEL_CORE_I5-8400
+    #+ATTR_HTML: :width 1500px
+    [[./coffee_lake/benchmark/store/store_bw.png]]
 
+** Ivy Bridge
