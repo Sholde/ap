@@ -106,6 +106,8 @@
 ** Coffee Lake
 *** Information
 
+    I run all benchmark on a *USB LIVE Manjaro* with 4G.
+
     #+CAPTION: Topology of Intel Core i5-8400
     #+NAME: fig:topology_INTEL_CORE_I5-8400
     #+ATTR_HTML: :width 1500px
@@ -239,3 +241,102 @@ $ ./plot.sh 10 coffee_lake "Intel Core i5-8400"
     For other memory space, that is relatively the same between both.
 
 ** Ivy Bridge
+*** copy
+
+    #+CAPTION: Copy benchmark on an Intel Pentium 2117U
+    #+NAME: fig:load_INTEL_PENTIUM_2117U
+    #+ATTR_HTML: :width 1500px
+    [[./ivy_bridge/benchmark/copy/copy_bw.png]]
+
+    We can see a difference of bandwith for *sse* and *avx* for L1
+    cache, where *avx* is better but for other memory space there are
+    not difference.
+
+    Also, all *sse* size is the same.
+
+*** dotprod
+
+    #+CAPTION: Dotprod benchmark on an Intel Pentium 2117U
+    #+NAME: fig:load_INTEL_PENTIUM_2117U
+    #+ATTR_HTML: :width 1500px
+    [[./ivy_bridge/benchmark/dotprod/dotprod_bw.png]]
+
+    For *L1* cache we can see an evolution between all size. *AVX*
+    stay better.
+
+    For *L2* cache, *avx* is a little bit better than *sse*.
+
+    Other memory space have not significant.
+
+*** load
+
+    #+CAPTION: Load benchmark on an Intel Pentium 2117U
+    #+NAME: fig:load_INTEL_PENTIUM_2117U
+    #+ATTR_HTML: :width 1500px
+    [[./ivy_bridge/benchmark/load/load_bw.png]]
+
+    We can see a difference between all size for all cache. *avx*
+    still better.
+
+*** memcpy
+
+    #+CAPTION: Memcpy benchmark on an Intel Pentium 2117U
+    #+NAME: fig:load_INTEL_PENTIUM_2117U
+    #+ATTR_HTML: :width 1500px
+    [[./ivy_bridge/benchmark/memcpy/memcpy_bw.png]]
+
+    For *L1* cache, the bandwith is not really stable.
+
+    But for other memory space it is.
+
+    We can however raise that we have this list of memory space
+    speed :
+    1. L1 cache
+    2. L2 cache
+    3. L3 cache
+    4. DRAM
+
+*** ntstore
+
+    #+CAPTION: Non temporal store benchmark on an Intel Pentium 2117U
+    #+NAME: fig:load_INTEL_PENTIUM_2117U
+    #+ATTR_HTML: :width 1500px
+    [[./ivy_bridge/benchmark/ntstore/ntstore_bw.png]]
+
+    All memory space are relatively the same. In average 35
+    BiB/s. That is good.
+
+*** pc
+
+    #+CAPTION: Pointer chasing benchmark on an Intel Pentium 2117U
+    #+NAME: fig:load_INTEL_PENTIUM_2117U
+    #+ATTR_HTML: :width 1500px
+    [[./ivy_bridge/benchmark/pc/pc_bw.png]]
+
+    For all cache the bandwith was the same. I mean that they are
+    relatively near in bandwith in general.
+
+    But I don't undestand the DRAM bandwith.
+
+*** reduc
+
+    #+CAPTION: Reduction benchmark on an Intel Pentium 2117U
+    #+NAME: fig:load_INTEL_PENTIUM_2117U
+    #+ATTR_HTML: :width 1500px
+    [[./ivy_bridge/benchmark/reduc/reduc_bw.png]]
+
+    We have better badnwith for *avx* with all cache.
+
+    For *DRAM* we have a problem that I don't understand.
+
+*** store
+
+    #+CAPTION: Store benchmark on an Intel Pentium 2117U
+    #+NAME: fig:load_INTEL_PENTIUM_2117U
+    #+ATTR_HTML: :width 1500px
+    [[./ivy_bridge/benchmark/store/store_bw.png]]
+
+    We double on bandwith for L1 cache between *sse* and *avx*.
+
+    For other memory space, that is relatively the same between both.
+
