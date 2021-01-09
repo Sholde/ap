@@ -106,7 +106,7 @@
 ** Coffee Lake
 *** Information
 
-    I run all benchmark on a *USB LIVE Manjaro* with 4G.
+    I run all benchmark on a *USB LIVE Manjaro XFCE* with 4G.
 
     #+CAPTION: Topology of Intel Core i5-8400
     #+NAME: fig:topology_INTEL_CORE_I5-8400
@@ -203,8 +203,8 @@ $ ./plot.sh 10 coffee_lake "Intel Core i5-8400"
     #+ATTR_HTML: :width 1500px
     [[./coffee_lake/benchmark/ntstore/ntstore_bw.png]]
 
-    All memory space are relatively the same. In average 35
-    BiB/s. That is good.
+    All memory space are relatively the same. That is good. In average
+    35 GiB/s.
 
 *** pc
 
@@ -241,6 +241,46 @@ $ ./plot.sh 10 coffee_lake "Intel Core i5-8400"
     For other memory space, that is relatively the same between both.
 
 ** Ivy Bridge
+*** Information
+
+    I run all benchmark on a *Native Linux* with *Manjaro i3*.
+
+    #+CAPTION: Topology of Intel Pentium 2117U
+    #+NAME: fig:topology_INTEL_PENTIUM_2117U
+    #+ATTR_HTML: :width 1500px
+    [[./ivy_bridge/system/topology/lstopo.png]]
+
+    Caches size:
+    - L1: 32K
+    - L2: 256K
+    - L3: 2048K
+    - DRAM: 4G
+
+    I decide to run benchmarks with :
+    - L1: 24K
+    - L2: 200K
+    - L3: 1000K
+    - DRAM: 4000K
+
+    This size are chosen because they fit on their caches/ram.
+
+    The governor was set to *performance*, because *userspace* wasn't
+    available.
+    And the frequency was set to *1.80GHz*. (the maximum)
+
+    *IMPORTANT NOTE*: I have not *AVX* on this machine, so *pc* and
+    *dotprod* benchmarks was not run.
+
+**** Command
+
+#+begin_src bash
+$ ./install.sh ivy_bridge
+$ ./compile.sh
+$ sudo cpupower -c 1 frequency-set --governor performance
+$ ./run.sh ivy_bridge 1 24 200 1000 4000
+$ ./plot.sh 10 ivy_bridge "Intel Pentium 2117U"
+#+end_src
+
 *** copy
 
     #+CAPTION: Copy benchmark on an Intel Pentium 2117U
@@ -248,11 +288,7 @@ $ ./plot.sh 10 coffee_lake "Intel Core i5-8400"
     #+ATTR_HTML: :width 1500px
     [[./ivy_bridge/benchmark/copy/copy_bw.png]]
 
-    We can see a difference of bandwith for *sse* and *avx* for L1
-    cache, where *avx* is better but for other memory space there are
-    not difference.
-
-    Also, all *sse* size is the same.
+    We have only a difference for *L1* cache.
 
 *** dotprod
 
@@ -261,12 +297,7 @@ $ ./plot.sh 10 coffee_lake "Intel Core i5-8400"
     #+ATTR_HTML: :width 1500px
     [[./ivy_bridge/benchmark/dotprod/dotprod_bw.png]]
 
-    For *L1* cache we can see an evolution between all size. *AVX*
-    stay better.
-
-    For *L2* cache, *avx* is a little bit better than *sse*.
-
-    Other memory space have not significant.
+    No *AVX*.
 
 *** load
 
@@ -275,8 +306,7 @@ $ ./plot.sh 10 coffee_lake "Intel Core i5-8400"
     #+ATTR_HTML: :width 1500px
     [[./ivy_bridge/benchmark/load/load_bw.png]]
 
-    We can see a difference between all size for all cache. *avx*
-    still better.
+    We have only a difference for *L1* cache.
 
 *** memcpy
 
@@ -303,8 +333,8 @@ $ ./plot.sh 10 coffee_lake "Intel Core i5-8400"
     #+ATTR_HTML: :width 1500px
     [[./ivy_bridge/benchmark/ntstore/ntstore_bw.png]]
 
-    All memory space are relatively the same. In average 35
-    BiB/s. That is good.
+    All memory space are relatively the same. That is good. In average
+    9 GiB/s.
 
 *** pc
 
@@ -313,10 +343,7 @@ $ ./plot.sh 10 coffee_lake "Intel Core i5-8400"
     #+ATTR_HTML: :width 1500px
     [[./ivy_bridge/benchmark/pc/pc_bw.png]]
 
-    For all cache the bandwith was the same. I mean that they are
-    relatively near in bandwith in general.
-
-    But I don't undestand the DRAM bandwith.
+    No *avx*.
 
 *** reduc
 
@@ -325,9 +352,7 @@ $ ./plot.sh 10 coffee_lake "Intel Core i5-8400"
     #+ATTR_HTML: :width 1500px
     [[./ivy_bridge/benchmark/reduc/reduc_bw.png]]
 
-    We have better badnwith for *avx* with all cache.
-
-    For *DRAM* we have a problem that I don't understand.
+    For all cache, we have a difference between all size.
 
 *** store
 
@@ -336,7 +361,4 @@ $ ./plot.sh 10 coffee_lake "Intel Core i5-8400"
     #+ATTR_HTML: :width 1500px
     [[./ivy_bridge/benchmark/store/store_bw.png]]
 
-    We double on bandwith for L1 cache between *sse* and *avx*.
-
-    For other memory space, that is relatively the same between both.
-
+    For all memory space, it is relatively the same between all size.
