@@ -1,0 +1,4 @@
+       store_SSE_16B 12.083
+       store_SSE_32B 12.086
+       store_SSE_64B 12.087
+      store_SSE_128B 12.084

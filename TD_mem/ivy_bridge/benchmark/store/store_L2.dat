@@ -1,0 +1,4 @@
+       store_SSE_16B 16.794
+       store_SSE_32B 16.800
+       store_SSE_64B 16.812
+      store_SSE_128B 16.779

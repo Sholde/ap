@@ -1,0 +1,4 @@
+       reduc_SSE_16B 8.348
+       reduc_SSE_32B 10.469
+       reduc_SSE_64B 10.470
+      reduc_SSE_128B 10.497

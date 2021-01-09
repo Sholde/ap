@@ -1,0 +1,4 @@
+        copy_SSE_16B 23.193
+        copy_SSE_32B 24.424
+        copy_SSE_64B 24.543
+       copy_SSE_128B 24.556
