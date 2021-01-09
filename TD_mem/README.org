@@ -276,7 +276,7 @@ $ ./plot.sh 10 coffee_lake "Intel Core i5-8400"
 #+begin_src bash
 $ ./install.sh ivy_bridge
 $ ./compile.sh
-$ sudo cpupower -c 1 frequency-set --governor performance
+$ sudo cpupower -c 1 frequency-set -f 1.8GHz
 $ ./run.sh ivy_bridge 1 24 200 1000 4000
 $ ./plot.sh 10 ivy_bridge "Intel Pentium 2117U"
 #+end_src
@@ -335,10 +335,6 @@ $ ./plot.sh 10 ivy_bridge "Intel Pentium 2117U"
 
     All memory space are relatively the same. That is good. In average
     9 GiB/s.
-
-    I know that standart derivation of *reduc_SSE_16B* is average 10%
-    and it is not an evaluble performance but I run 20 times the
-    bencmark and it was each time at 10%.
 
 *** pc
 
