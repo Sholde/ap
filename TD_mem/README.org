@@ -96,6 +96,16 @@
     Chech the max bandwidth of L1 cache and take it on max y range for
     others caches and DRAM.
 
+** Check standart derivation
+
+   The script =check_sd.sh= print all standard derivation of given cpu
+   architecture benchmark.
+
+   Take *1 argument*:
+   - cpu architecture, to print all standart derivation
+
+   We can easily see if standart derivation is under *7%*.
+
 ** Clean
 
    Clean the follow list of file :
