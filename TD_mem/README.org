@@ -143,6 +143,7 @@
     I try also to install grub but it fail again.
 
     _cpu max frequency:_ 4.00GHz
+
     _cpu frequency:_ ~ 4.00GHz (because governor = performance)
 
     All program are set to core 5. I have 6 core.
