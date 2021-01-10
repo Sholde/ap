@@ -1,6 +1,6 @@
-#+title:Evaluation des Performances et Modelisation Librairies Cryptographiques pour les Communications MPI
-#+author:Sholde
-#+date:2021
+#+title: Evaluation des Performances et Modelisation Librairies Cryptographiques pour les Communications MPI
+#+author: Sholde
+#+date: 2021
 
 * Variables de test
 
@@ -404,6 +404,3 @@
   pas besoin d'implémenter un librairie chiffré MPI pour modéliser les
   performances.
 
-* Reference
-
-  ./crypto_mpi.pdf
