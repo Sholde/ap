@@ -369,3 +369,41 @@
     chiffrement.
 
 ** Discussion
+   
+   Notre modèle nous permet de réfléchir sur les performances des
+   communication *MPI* car il permet de prédire les performances sans
+   devoir implémenter des communications chiffré *MPI*.
+
+   Les performances pour un seul coeur de calcul sont limité par la
+   vitesse de chiffrement et non par la vitesse de communication.
+
+   Etant donnée que nous avons atteint la loi de Moore et que la
+   puissace de calcul d'un coeur n'augmente pas beaucoup. Et comme la
+   vitesse de communication ne cesse d'augmenter. Les communications
+   de chiffrement MPI vont devenir de plus en plus difficile.
+
+   Pour pour améliorer les performances d'un seul coeur sur de larges
+   messages, on pourrai découper le messages un plein de petit
+   segments, les chiffrés et les envoyés avec des communication non
+   bloquantes.
+
+* Conclusion
+
+  En prenant en considération la vié privée et l'intégrité des donnée,
+  nous avons conclu que les librairies *OpenSSL* et *BoringSSL* ont
+  les meilleurs performances.
+
+  Nous avons pu voir que pour ces deux libraries, pour l'analyse de
+  performance des NAS nous n'avons eu que *12.75%* de gain pour
+  *Ethernet* et *17.93%* de gain pour l'Infiniband.
+
+  Nous avons pu voir que le modle de *Hockney* modélise avec une
+  grande présision le chiffrement en *Ping-Pong*. Et que nous n'avont
+  besoin que des résultats de performance d'une librairie *MPI* et
+  d'une librairie cryptographique, ce qui veut dire que nous n'avons
+  pas besoin d'implémenter un librairie chiffré MPI pour modéliser les
+  performances.
+
+* Reference
+
+  ./crypto_mpi.pdf
