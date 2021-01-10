@@ -138,15 +138,16 @@
     This size are chosen because they fit on their caches/ram.
 
     The governor was set to *performance*, because *userspace* wasn't
-    available.
-    And the frequency was set to *4.00GHz*. (the maximum)
+    available. I try to disable *intel_pstate* on */etc/default/grub*
+    but when I update grub it fail. I think is due to the *USB LIVE*.
+    I try also to install grub but it fail again.
 
 **** Command
 
 #+begin_src bash
 $ ./install.sh coffee_lake
 $ ./compile.sh
-$ sudo cpupower -c 5 frequency-set --governor performance -f 4.00GHz
+$ sudo cpupower -c 5 frequency-set --governor performance
 $ ./run.sh coffee_lake 5 24 200 5000 15000
 $ ./plot.sh 10 coffee_lake "Intel Core i5-8400"
 #+end_src
@@ -158,11 +159,11 @@ $ ./plot.sh 10 coffee_lake "Intel Core i5-8400"
     #+ATTR_HTML: :width 1500px
     [[./coffee_lake/benchmark/copy/copy_bw.png]]
 
-    We can see a difference of bandwith for *sse* and *avx* for L1
-    cache, where *avx* is better but for other memory space there are
+    We can see a difference of bandwith for *SSE* and *AVX* for *L1
+    cache*, where *AVX* is better but for other *memory spaces* there are
     not difference.
 
-    Also, all *sse* size is the same.
+    Also, all *sse* size have the same bandwith.
 
 *** dotprod
 
@@ -171,12 +172,13 @@ $ ./plot.sh 10 coffee_lake "Intel Core i5-8400"
     #+ATTR_HTML: :width 1500px
     [[./coffee_lake/benchmark/dotprod/dotprod_bw.png]]
 
-    For *L1* cache we can see an evolution between all size. *AVX*
-    stay better.
+    For *L1* cache we can see an evolution between all size for *SSE*
+    and AVX*, but *AVX* stay better, we have an huge difference (2
+    times faster). Also for *L2* cache *AVX* is better.
 
-    For *L2* cache, *avx* is a little bit better than *sse*.
+    For *L3* cache, *AVX* is a little bit better than *SSE*.
 
-    Other memory space have not significant.
+    The difference for *DRAM* are not significant.
 
 *** load
 
@@ -185,8 +187,9 @@ $ ./plot.sh 10 coffee_lake "Intel Core i5-8400"
     #+ATTR_HTML: :width 1500px
     [[./coffee_lake/benchmark/load/load_bw.png]]
 
-    We can see a difference between all size for all cache. *avx*
-    still better.
+    We can see a difference between all size for all cache.
+
+    *AVX* still better than *SSE*.
 
 *** memcpy
 
@@ -205,6 +208,8 @@ $ ./plot.sh 10 coffee_lake "Intel Core i5-8400"
     2. L2 cache
     3. L3 cache
     4. DRAM
+
+    And we can note that we have a ratio of 2 between all cache.
 
 *** ntstore
 
@@ -235,7 +240,8 @@ $ ./plot.sh 10 coffee_lake "Intel Core i5-8400"
     #+ATTR_HTML: :width 1500px
     [[./coffee_lake/benchmark/reduc/reduc_bw.png]]
 
-    We have better badnwith for *avx* with all cache.
+    We have better bandwith for *AVX* with all cache, and we keep an
+    evolution between all size.
 
     For *DRAM* we have a problem that I don't understand.
 
@@ -246,9 +252,13 @@ $ ./plot.sh 10 coffee_lake "Intel Core i5-8400"
     #+ATTR_HTML: :width 1500px
     [[./coffee_lake/benchmark/store/store_bw.png]]
 
-    We double on bandwith for L1 cache between *sse* and *avx*.
+    We double on bandwith for *L1* cache between *SSE* and *AVX*.
 
-    For other memory space, that is relatively the same between both.
+    For *L2* cache *AVX* is a half faster than *SSE*.
+
+    For other memory spaces, that is relatively the same between both.
+
+    We can raise that all size of *SSE* and *AVX* give the same bandwith.
 
 ** Ivy Bridge
 *** Information
@@ -274,9 +284,7 @@ $ ./plot.sh 10 coffee_lake "Intel Core i5-8400"
 
     This size are chosen because they fit on their caches/ram.
 
-    The governor was set to *performance*, because *userspace* wasn't
-    available.
-    And the frequency was set to *1.80GHz*. (the maximum)
+    The frequency was set to *1.80GHz*. (the maximum)
 
     *IMPORTANT NOTE*: I have not *AVX* on this machine, so *pc* and
     *dotprod* benchmarks was not run.
@@ -298,7 +306,9 @@ $ ./plot.sh 10 ivy_bridge "Intel Pentium 2117U"
     #+ATTR_HTML: :width 1500px
     [[./ivy_bridge/benchmark/copy/copy_bw.png]]
 
-    We have only a difference for *L1* cache.
+    We have only a difference for *L1* cache between all size.
+
+    *L1* and *L2* have relatively the same bandwith.
 
 *** dotprod
 
@@ -316,7 +326,7 @@ $ ./plot.sh 10 ivy_bridge "Intel Pentium 2117U"
     #+ATTR_HTML: :width 1500px
     [[./ivy_bridge/benchmark/load/load_bw.png]]
 
-    We have only a difference for *L1* cache.
+    We have only a difference for *L1* cache for all size.
 
 *** memcpy
 
@@ -325,11 +335,7 @@ $ ./plot.sh 10 ivy_bridge "Intel Pentium 2117U"
     #+ATTR_HTML: :width 1500px
     [[./ivy_bridge/benchmark/memcpy/memcpy_bw.png]]
 
-    For *L1* cache, the bandwith is not really stable.
-
-    But for other memory space it is.
-
-    We can however raise that we have this list of memory space
+    We can raise that we have this list of memory space
     speed :
     1. L1 cache
     2. L2 cache
@@ -343,7 +349,7 @@ $ ./plot.sh 10 ivy_bridge "Intel Pentium 2117U"
     #+ATTR_HTML: :width 1500px
     [[./ivy_bridge/benchmark/ntstore/ntstore_bw.png]]
 
-    All memory space are relatively the same. That is good. In average
+    All memory spaces are relatively the same. That is good. In average
     9 GiB/s.
 
 *** pc
@@ -353,7 +359,7 @@ $ ./plot.sh 10 ivy_bridge "Intel Pentium 2117U"
     #+ATTR_HTML: :width 1500px
     [[./ivy_bridge/benchmark/pc/pc_bw.png]]
 
-    No *avx*.
+    No *AVX*.
 
 *** reduc
 
@@ -362,7 +368,8 @@ $ ./plot.sh 10 ivy_bridge "Intel Pentium 2117U"
     #+ATTR_HTML: :width 1500px
     [[./ivy_bridge/benchmark/reduc/reduc_bw.png]]
 
-    For all cache, we have a difference between all size.
+    For all cache, we have a difference between all size. A little bit
+    difference for *DRAM*.
 
 *** store
 
@@ -371,4 +378,9 @@ $ ./plot.sh 10 ivy_bridge "Intel Pentium 2117U"
     #+ATTR_HTML: :width 1500px
     [[./ivy_bridge/benchmark/store/store_bw.png]]
 
-    For all memory space, it is relatively the same between all size.
+    For all memory space, it is relatively the same between all
+    size. We also see the memory spaces speed list :
+    1. L1 cache
+    2. L2 cache
+    3. L3 cache
+    4. DRAM
