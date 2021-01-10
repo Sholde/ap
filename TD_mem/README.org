@@ -87,14 +87,14 @@
 
     _WARNING_: it return a *pdf* file on output.
 
-    Take *3 arguments*:
+    Take *4 arguments*:
     1. a delta (to avoid plotting with max y)
     2. path of data file + name of benchmark (i.e: knl/benchmark/reduc/reduc)
     3. the name of benchmark (without spaces)
     4. the name of cpu
 
-    Chech the max bandwidth of L1 cache and take it on max y range for
-    others caches and DRAM.
+    _NOTE:_ The *gnuplot* script take *the higher y of L1 cache
+    as reference*.
 
 ** Check standart derivation
 
@@ -227,6 +227,10 @@ $ ./plot.sh 10 coffee_lake "Intel Core i5-8400"
     #+NAME: fig:load_INTEL_CORE_I5-8400
     #+ATTR_HTML: :width 1500px
     [[./coffee_lake/benchmark/pc/pc_bw.png]]
+
+    _NOTE:_ I replot manually with the *gnuplot* script with a delta
+    of 40 because the *gnuplot* script take *the higher y of L1 cache
+    as reference*.
 
     For all cache the bandwith was the same. I mean that they are
     relatively near in bandwith in general.
