@@ -39,7 +39,7 @@
 
    It take *exactly* 6 arguments in entry:
    1. cpu architecture (to create a folder and store data)
-   2. core id (taskset on the program on this core)
+   2. core id (taskset the program on this core)
    3. size to fit in L1 cache
    4. size to fit in L2 cache
    5. size to fit in L3 cache
