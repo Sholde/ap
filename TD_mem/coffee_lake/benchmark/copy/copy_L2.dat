@@ -1,8 +1,8 @@
-        copy_SSE_16B 63.862
-        copy_SSE_32B 67.081
-        copy_SSE_64B 67.508
-       copy_SSE_128B 66.907
-        copy_AVX_32B 73.549
-        copy_AVX_64B 70.212
-       copy_AVX_128B 69.751
-       copy_AVX_256B 71.217
+        copy_SSE_16B 66.776
+        copy_SSE_32B 71.180
+        copy_SSE_64B 71.504
+       copy_SSE_128B 71.544
+        copy_AVX_32B 81.772
+        copy_AVX_64B 82.178
+       copy_AVX_128B 82.674
+       copy_AVX_256B 82.034
