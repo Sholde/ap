@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Clean temporary files
-rm -Rf *~ **/*~
+rm -Rf *~ **/*~ **/*.o
 
 # Clean cpu architecture directory
 if [ $# -eq 1 ] ; then
