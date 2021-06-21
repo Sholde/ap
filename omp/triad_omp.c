@@ -13,8 +13,7 @@ static void init(double *restrict a, unsigned long long n, double d)
 
 static void triad(double *restrict a, double *restrict b, double *restrict c, unsigned long long n)
 {
-#pragma omp target teams distribute parallel for simd \
-  map(a[0:n], b[0:n], c[0:n])
+#pragma omp target teams distribute parallel for simd map(a[0:n], b[0:n], c[0:n])
   for (unsigned long long i = 0; i < n; ++i)
     c[i] += a[i] * b[i];
 }
