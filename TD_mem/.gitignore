@@ -1,4 +1,4 @@
 *~
 *_SSE_AVX
-memcpy
-pc
+pc/pc
+memcpy/memcpy
