@@ -22,7 +22,7 @@ fi
 directories="copy dotprod load memcpy ntstore pc reduc store"
 for directory in $directories ; do
     dir_path=$cpu_arch/benchmark/$directory
-    gnuplot -c plot_bw.gp $delta $dir_path/$directory ${directory^} $cpu_name > $dir_path/$directory"_bw.png"
+    gnuplot -c plot_bw.gp $delta $dir_path/$directory ${directory^} "$cpu_name" > $dir_path/$directory"_bw.png"
 done
 
 exit 0
