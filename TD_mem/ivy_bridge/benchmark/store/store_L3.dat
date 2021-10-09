@@ -1,0 +1,8 @@
+       store_SSE_16B 39.002
+       store_SSE_32B 39.017
+       store_SSE_64B 39.046
+      store_SSE_128B 39.046
+       store_AVX_32B 41.594
+       store_AVX_64B 41.559
+      store_AVX_128B 41.574
+      store_AVX_256B 41.560

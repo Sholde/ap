@@ -1,0 +1,8 @@
+       store_SSE_16B 57.872
+       store_SSE_32B 57.652
+       store_SSE_64B 56.381
+      store_SSE_128B 58.250
+       store_AVX_32B 113.217
+       store_AVX_64B 117.016
+      store_AVX_128B 118.683
+      store_AVX_256B 117.065

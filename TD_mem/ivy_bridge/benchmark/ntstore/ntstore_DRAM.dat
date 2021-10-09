@@ -1,0 +1,8 @@
+     ntstore_SSE_16B 36.795
+     ntstore_SSE_32B 36.812
+     ntstore_SSE_64B 36.828
+    ntstore_SSE_128B 36.822
+     ntstore_AVX_32B 37.405
+     ntstore_AVX_64B 37.445
+    ntstore_AVX_128B 37.444
+    ntstore_AVX_256B 37.444

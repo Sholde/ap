@@ -1,0 +1,6 @@
+ldd (GNU libc) 2.32
+Copyright © 2020 Free Software Foundation, Inc.
+Ce logiciel est libre; voir les sources pour les conditions de
+reproduction. AUCUNE garantie n'est donnée; tant pour des raisons
+COMMERCIALES que pour RÉPONDRE À UN BESOIN PARTICULIER.
+Écrits par Roland McGrath et Ulrich Drepper.
